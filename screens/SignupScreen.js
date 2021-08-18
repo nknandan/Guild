@@ -5,6 +5,7 @@ import FormButton from '../components/FormButton';
 import FormInput from '../components/FormInput';
 import SocialButton from '../components/SocialButton';
 import { AuthContext } from '../navigation/AuthProvider';
+import LinearGradient from 'react-native-linear-gradient';
 
 const SignupScreen = ({navigation}) => {
 
@@ -12,10 +13,11 @@ const SignupScreen = ({navigation}) => {
     const [password,setPassword] = useState();
     const [confirmPassword, setConfirmPassword] = useState();
 
-    const {register} = useContext(AuthContext);
+    const {register, googleLogin} = useContext(AuthContext);
 
     return (
-        <View style={styles.container}>
+        <View>
+          <LinearGradient colors={['#2d2d2d', '#543965']} start={{ x: 0, y: 0.3 }} end={{ x: 0, y: 1}} style={styles.container}>
             {/* <Image source={require('../assets/logo.png')} style={styles.logo}/> */}
             <Text style={styles.text}>Create an account</Text>
             <FormInput 
@@ -64,13 +66,17 @@ const SignupScreen = ({navigation}) => {
                 </Text>
             </View>
 
-            <SocialButton
+            {/* <SocialButton
                 buttonTitle="Sign Up with Facebook"
                 btnType="facebook"
                 color="#4867aa"
                 backgroundColor="#e6eaf4"
                 onPress={() => fbLogin()}
-            />
+            /> */}
+
+            <View style={styles.empty}>
+
+            </View>
 
             <SocialButton
                 buttonTitle="Sign Up with Google"
@@ -85,6 +91,7 @@ const SignupScreen = ({navigation}) => {
                 onPress={() => navigation.navigate('Login')}>
                 <Text style={styles.navButtonText}>Have an account? Log In</Text>
             </TouchableOpacity>
+          </LinearGradient>
         </View>
     );
 }
@@ -135,6 +142,7 @@ const styles = StyleSheet.create({
         flexWrap: 'wrap',
         marginVertical: 35,
         justifyContent: 'center',
+        marginBottom: 70,
       },
       color_textPrivate: {
         fontSize: 13,
@@ -142,4 +150,7 @@ const styles = StyleSheet.create({
         fontFamily: 'Lato-Regular',
         color: 'white',
       },
+      empty: {
+        marginBottom: 55,
+      }
   });

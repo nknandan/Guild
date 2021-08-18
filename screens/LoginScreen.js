@@ -1,18 +1,22 @@
-import React, { useState } from 'react';
+import React, { useContext, useState } from 'react';
 import { View, Text, TouchableOpacity, Button, Image, StyleSheet } from 'react-native';
 import { windowHeight } from '../utils/Dimentions';
 import FormButton from '../components/FormButton';
 import FormInput from '../components/FormInput';
 import SocialButton from '../components/SocialButton';
+import { AuthContext } from '../navigation/AuthProvider';
+import LinearGradient from 'react-native-linear-gradient';
 
 
 const LoginScreen = ({navigation}) => {
-
+  
     const [email,setEmail] = useState();
     const [password,setPassword] = useState();
+    const {login, googleLogin} = useContext(AuthContext);
 
     return (
-        <View style={styles.container}>
+        <View>
+          <LinearGradient colors={['#2d2d2d', '#543965']} start={{ x: 0, y: 0.3 }} end={{ x: 0, y: 1}} style={styles.container}>
             <Image source={require('../assets/logo.png')} style={styles.logo}/>
             <FormInput 
                 labelValue={email}
@@ -34,21 +38,23 @@ const LoginScreen = ({navigation}) => {
 
             <FormButton
                 buttonTitle="Log In"
-                onPress={() => alert('Log In is clicked !')}
+                onPress={() => login(email, password)}
             />
 
             <TouchableOpacity style={styles.forgotButton} onPress={() => {}}>
                 <Text style={styles.navButtonText}>Forgot Password?</Text>
             </TouchableOpacity>
 
-            <SocialButton
+            {/* <SocialButton
                 buttonTitle="Sign In with Facebook"
                 btnType="facebook"
                 color="#4867aa"
                 backgroundColor="#e6eaf4"
                 onPress={() => fbLogin()}
-            />
+            /> */}
+            <View style={styles.empty}>
 
+            </View>
             <SocialButton
                 buttonTitle="Sign In with Google"
                 btnType="google"
@@ -64,6 +70,7 @@ const LoginScreen = ({navigation}) => {
                 Don't have an account? Create here
                 </Text>
             </TouchableOpacity>
+          </LinearGradient>
         </View>
     );
 }
@@ -104,4 +111,7 @@ const styles = StyleSheet.create({
       color: '#ffbe8f',
       fontFamily: 'Lato-Regular',
     },
+    empty: {
+      marginBottom: 50,
+    }
   });

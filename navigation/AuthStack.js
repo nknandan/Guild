@@ -6,6 +6,8 @@ import LoginScreen from '../screens/LoginScreen';
 import OnboardingScreen from '../screens/OnboardingScreen';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import FontAwesome from 'react-native-vector-icons/FontAwesome';
+import { GoogleSignin } from '@react-native-google-signin/google-signin';
+
 
 const Stack = createStackNavigator();
 
@@ -22,6 +24,12 @@ const AuthStack = () => {
         setIsFirstLaunch(false);
       }
     });
+    
+    GoogleSignin.configure({
+      webClientId: '515563494117-64lu7rvq64v7k945r9eg2fl23surb46j.apps.googleusercontent.com',
+    });
+  
+  
   }, []);
 
   if( isFirstLaunch === null){
