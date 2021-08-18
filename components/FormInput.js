@@ -8,14 +8,14 @@ const FormButton = ({labelValue, placeholderText, iconType, ...rest}) => {
     return(
         <View style={styles.inputContainer}>
             <View style={styles.iconStyle}>
-                <AntDesign name={iconType} size={25} color="#666 "/>
+                <AntDesign name={iconType} size={25} color="#8d83e0"/>
             </View>
             <TextInput
                 style={styles.input}
                 value={labelValue}
                 numberOfLines={1}
                 placeholder={placeholderText}
-                placeholderTextColor='#666'
+                placeholderTextColor='rgba(255, 190, 143, 0.51)'
                 {...rest}
             />
         </View>
@@ -35,7 +35,7 @@ const styles = StyleSheet.create({
       borderWidth: 2,
       flexDirection: 'row',
       alignItems: 'center',
-      backgroundColor: '#fff',
+      backgroundColor: '#2d2d2d',
     },
     iconStyle: {
       padding: 10,
@@ -55,6 +55,7 @@ const styles = StyleSheet.create({
       color: '#333',
       justifyContent: 'center',
       alignItems: 'center',
+      color: '#ffbe8f'
     },
     inputField: {
       padding: 10,

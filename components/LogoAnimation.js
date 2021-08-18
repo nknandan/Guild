@@ -13,7 +13,7 @@ export default class logoanimation extends Component {
     componentDidMount() {
         Animated.timing(this.animatedValue, {
             toValue: 1,
-            duration: 3000,
+            duration: 1000,
             useNativeDriver: true
         }).start()
     }
@@ -21,7 +21,7 @@ export default class logoanimation extends Component {
     render() {
         const interPolateRotation = this.animatedValue.interpolate({
             inputRange: [0.5,1],
-            outputRange: ['0deg', '1080deg'],
+            outputRange: ['0deg', '180deg'],
         })
         const animatedStyle = {
            transform: [
@@ -41,6 +41,7 @@ const styles = StyleSheet.create({
     logoc: {
         height: 120,
         width: 120,
+        marginTop: -4,
         marginLeft: 0,
     },
 })

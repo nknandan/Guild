@@ -10,6 +10,7 @@ import LinearGradient from 'react-native-linear-gradient';
 const SignupScreen = ({navigation}) => {
 
     const [email,setEmail] = useState();
+    const [name,setName] = useState();
     const [password,setPassword] = useState();
     const [confirmPassword, setConfirmPassword] = useState();
 
@@ -27,6 +28,14 @@ const SignupScreen = ({navigation}) => {
                 iconType="user" 
                 keyboardType="email-address"
                 autoCapitalize="none"
+                autoCorrect={false}    
+            />
+            <FormInput 
+                labelValue={name}
+                onChangeText={(userName) => setName(userName)}
+                placeholderText="Name" 
+                iconType="user" 
+                autoCapitalize="true"
                 autoCorrect={false}    
             />
 
@@ -100,13 +109,13 @@ export default SignupScreen;
 
 const styles = StyleSheet.create({
     container: {
-      justifyContent: 'center',
+      // justifyContent: 'center',
       alignItems: 'center',
       padding: 20,
       paddingTop: 50,
       backgroundColor: '#2d2d2d',
       height: windowHeight,
-      marginTop: -60,
+      marginTop: -50,
     },
     logo: {
       height: 150,
@@ -125,7 +134,7 @@ const styles = StyleSheet.create({
       marginTop: 15,
     },
     navButton1: {
-        margin: 35,
+        margin: 25,
     },
     forgotButton: {
       marginVertical: 35,
@@ -151,6 +160,6 @@ const styles = StyleSheet.create({
         color: 'white',
       },
       empty: {
-        marginBottom: 55,
+        marginBottom: 6,
       }
   });

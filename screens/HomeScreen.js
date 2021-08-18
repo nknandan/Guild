@@ -19,6 +19,7 @@ import Icon from 'react-native-vector-icons/FontAwesome';
 import InterestBar from '../components/InterestBar';
 import Logoanimation from '../components/LogoAnimation';
 
+
 const HomeScreen = ({navigation}) => {
   const {user, logout} = useContext(AuthContext);
 
@@ -26,11 +27,7 @@ const HomeScreen = ({navigation}) => {
     <View>
       <LinearGradient colors={['#2d2d2d', '#396563']} start={{ x: 0, y: 0.5 }} end={{ x: 0, y: 1}} style={styles.container}>
            <View style={styles.navbar}>
-            {/* <View>
-            <Image source={require('../assets/logo_circle.png')} style={styles.logoc}/>
-            </View> */}
             <Logoanimation/>
-            {/* <Image source={require('../assets/logo_circle.png')} style={styles.logoc}/> */}
             <Image source={require('../assets/logo_name.png')} style={styles.logon}/>
             <TouchableOpacity style={styles.usercon}>
               <Icon.Button
@@ -39,7 +36,7 @@ const HomeScreen = ({navigation}) => {
                 color='#8d83e0'
                 size={30}
                 style={styles.user}
-                onPress={() => navigation.navigate('UserProfile')}
+                onPress={() => navigation.navigate('MessagesScreen')}
               />
             </TouchableOpacity>
 
@@ -53,7 +50,7 @@ const HomeScreen = ({navigation}) => {
                 <View style={styles.maincontainer2}>
                   <ScrollView style={styles.scroll}>
                     <View style={styles.maincontainer3}>
-                      <InterestBar buttonTitle={'Gaming'}/>
+                      <InterestBar buttonTitle={'Gaming'} onPress={() => navigation.navigate('InterestMeet')}/>
                       <InterestBar buttonTitle={'Movies'}/>
                       <InterestBar buttonTitle={'Marvel'}/>
                       <InterestBar buttonTitle={'Anime'}/>
