@@ -23,6 +23,12 @@ import Logoanimation from '../components/LogoAnimation';
 const HomeScreen = ({navigation}) => {
   const {user, logout} = useContext(AuthContext);
 
+  let intersts = ["Gaming", "Movie", "Valorant"]
+  
+  let interestBarArray = intersts.map(interest => (
+    <InterestBar buttonTitle={interest} onPress={() => navigation.navigate('InterestMeet')}/>
+  ));
+
   return(
     <View>
       <LinearGradient colors={['#2d2d2d', '#396563']} start={{ x: 0, y: 0.5 }} end={{ x: 0, y: 1}} style={styles.container}>
@@ -50,24 +56,7 @@ const HomeScreen = ({navigation}) => {
                 <View style={styles.maincontainer2}>
                   <ScrollView style={styles.scroll}>
                     <View style={styles.maincontainer3}>
-                      <InterestBar buttonTitle={'Gaming'} onPress={() => navigation.navigate('InterestMeet')}/>
-                      <InterestBar buttonTitle={'Movies'}/>
-                      <InterestBar buttonTitle={'Marvel'}/>
-                      <InterestBar buttonTitle={'Anime'}/>
-                      <InterestBar buttonTitle={'Football'}/>
-                      <InterestBar buttonTitle={'Rap'}/>
-                      <InterestBar buttonTitle={'Hip-Hop'}/>
-                      <InterestBar buttonTitle={'DC'}/>
-                      <InterestBar buttonTitle={'Reddit'}/>
-                      <InterestBar buttonTitle={'Aot'}/>
-                      <InterestBar buttonTitle={'Naruto'}/>
-                      <InterestBar buttonTitle={'Valorant'}/>
-                      <InterestBar buttonTitle={'TV Shows'}/>
-                      <InterestBar buttonTitle={'Olympics'}/>
-                      <InterestBar buttonTitle={'Politics'}/>
-                      <InterestBar buttonTitle={'Sports'}/>
-                      <InterestBar buttonTitle={'Coding'}/>
-                      <InterestBar buttonTitle={'Graphics'}/>
+                      {interestBarArray}
                     </View>
                   </ScrollView>
                   
