@@ -1,4 +1,4 @@
-import React, {useContext, useEffect, useState, Component} from 'react';
+import React, {useContext, useEffect, useState, useCallback, Component} from 'react';
 import {
   View,
   ScrollView,
@@ -18,8 +18,66 @@ import FontAwesome from 'react-native-vector-icons/FontAwesome';
 import Icon from 'react-native-vector-icons/FontAwesome';
 import InterestBar from '../components/InterestBar';
 import Logoanimation from '../components/LogoAnimation';
+import { GiftedChat } from 'react-native-gifted-chat'
+import auth from '@react-native-firebase/auth';
+import firestore from '@react-native-firebase/firestore';
 
-const InterestMeet = ({navigation}) => {
+const InterestMeet = ({navigation, route}) => {
+  console.log("hi");
+  const {roomName} = route.params;
+
+  console.log(roomName);
+
+  const [messages, setMessages] = useState([]);
+
+  const RoomsCollection = firestore().collection('Rooms');
+
+  const [room, setRoom] = useState([]);
+
+  RoomsCollection.where('Connected', '<', 2).where("Interest", "==", roomName).get().then(querySnapshot => {
+    let rooms = querySnapshot._docs;
+    if(rooms.length > 0){
+      //Rooms Available
+      setRoom(rooms[0]._ref);
+      room.update({
+        'Connected': 2,
+        'ConnectedUsers': firestore.FieldValue.arrayUnion(auth().currentUser.uid)
+      })
+      .then(() => {
+        console.log('Room Connected');
+      });
+    }else {
+      //Create a new Room
+      RoomsCollection.add({
+        Interest: roomName,
+        ConnectedUsers: [auth().currentUser.uid],
+        Connected: 1
+      })
+      .then(() => {
+        console.log('Room Created and Waiting!');
+      });
+    
+    }
+    console.log(querySnapshot._docs);
+  });
+
+  useEffect(() => {
+    setMessages([
+      {
+        _id: 1,
+        text: 'Hello developer',
+        createdAt: new Date(),
+        user: {
+          _id: 2,
+          name: 'React Native',
+        },
+      },
+    ])
+  }, [])
+
+  const onSend = useCallback((messages = []) => {
+    setMessages(previousMessages => GiftedChat.append(previousMessages, messages))
+  }, [])
 
   return(
     <View>
@@ -32,6 +90,12 @@ const InterestMeet = ({navigation}) => {
             <View style={styles.maincontainer}>
                 <Text style={styles.welcometext}>InterestMeet</Text>
             </View>
+            <GiftedChat
+              messages={messages}
+              onSend={messages => onSend(messages)}
+              user={{
+              _id: auth().currentUser.uid}}
+            />
         </LinearGradient>
         
     </View>
