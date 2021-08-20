@@ -57,7 +57,7 @@ const SignupScreen = ({navigation}) => {
 
             <FormButton
                 buttonTitle="Sign Up"
-                onPress={() => register(email, password)}
+                onPress={() => register(name, email, password)}
             />
 
             <View style={styles.textPrivate}>

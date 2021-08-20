@@ -33,12 +33,26 @@ export const AuthProvider = ({children}) => {
                         console.log(e);
                     }
                 },
-                register: async (email, password) => {
-                    try{
-                        await auth().createUserWithEmailAndPassword(email, password);
-                    }catch(e) {
-                        console.log(e);
-                    }
+                register: async (name, email, password) => {
+                    auth().createUserWithEmailAndPassword(email, password).then(() => {
+                        //Auth Done
+                        const update = {
+                            displayName: name
+                        };
+                        
+                        auth().currentUser.updateProfile(update).then(() => {
+                            //User Created Successfully and Name set
+                            console.log("SignUp Success");
+                            //TODO: Show A Notification or toast
+                        }).catch((error) => {
+                            //Failed to Set User's Name so deleting the user
+                            auth().currentUser.delete();
+                            console.log(error);
+                        });
+                    }).catch((error) => {
+                        //SingnUp Failed
+                        console.log(error);
+                    })
                 },
                 logout: async () => {
                     try{
