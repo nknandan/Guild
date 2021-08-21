@@ -11,23 +11,27 @@ import {
   Image,
   TouchableOpacity,
   Animated,
+  BackHandler
 } from 'react-native';
 import { AuthContext } from '../navigation/AuthProvider';
-import { windowHeight } from '../utils/Dimentions';
+import { windowHeight, windowWidth } from '../utils/Dimentions';
 import LinearGradient from 'react-native-linear-gradient';
 import FontAwesome from 'react-native-vector-icons/FontAwesome';
 import Icon from 'react-native-vector-icons/FontAwesome';
 import InterestBar from '../components/InterestBar';
 import Logoanimation from '../components/LogoAnimation';
-import { GiftedChat } from 'react-native-gifted-chat'
+import { Composer, InputToolbar, Time, Bubble, GiftedChat } from 'react-native-gifted-chat'
 import auth from '@react-native-firebase/auth';
 import firestore from '@react-native-firebase/firestore';
+import Modal from 'react-native-modalbox'
 
 const InterestMeet = ({navigation, route}) => {
 
   const [messages, setMessages] = useState([]);
 
   const RoomsCollection = firestore().collection('Rooms');
+
+  const [addf, setAddf] = useState(['Add Friend','user-plus','#2d2d2d']);
 
   let room;
   let they;
@@ -46,6 +50,27 @@ const InterestMeet = ({navigation, route}) => {
       };
     }, [])
   );
+
+  useEffect(() => {
+    const backAction = () => {
+      Alert.alert("Hold on!", "Are you sure you want to exit this room?", [
+        {
+          text: "Cancel",
+          onPress: () => null,
+          style: "cancel"
+        },
+        { text: "YES", onPress: () => navigation.goBack()  }
+      ]);
+      return true;
+    };
+
+    const backHandler = BackHandler.addEventListener(
+      "hardwareBackPress",
+      backAction
+    );
+
+    return () => backHandler.remove();
+  }, []);
 
   useEffect(() => {
     const {roomName} = route.params;
@@ -123,25 +148,115 @@ const InterestMeet = ({navigation, route}) => {
     setMessages(previousMessages => GiftedChat.append(previousMessages, messages))
   }, [])
 
+  const renderBubble = (props) => {
+    return (
+      <Bubble
+        {...props}
+        wrapperStyle={{
+          right: {
+            backgroundColor: '#ffbe8f',
+          },
+          left: {
+            backgroundColor: '#8d83e0',
+          }
+        }}
+        textStyle={{
+          right: {
+            color: '#000',
+          },
+        }}
+      />
+    );
+  };
+
+  const renderTime = (props) => {
+    return (
+      <Time
+      {...props}
+        timeTextStyle={{
+          left: {
+            color: 'black',
+          },
+          right: {
+            color: 'black',
+          },
+        }}
+      />
+    );
+  };
+
+  const customtInputToolbar = props => {
+    return (
+      <InputToolbar
+        {...props}
+        containerStyle={{
+          backgroundColor: "#2d2d2d",
+          borderTopColor: "#9E97D4",
+          borderTopWidth: 1,
+          padding: 1,
+          borderTopLeftRadius: 20, 
+          borderTopRightRadius: 20, 
+        }}
+        placeholder="Enter your message"
+        placeholderTextColor="rgba(255, 190, 143, 0.51)"
+
+      />
+    );
+  };
+
+
   return(
-    <View>
-        <LinearGradient colors={['#2d2d2d', '#653942']} start={{ x: 0, y: 0.5 }} end={{ x: 0, y: 1}} style={styles.container}>
-            <View style={styles.navbar}>
-                <Logoanimation/>
-                <Image source={require('../assets/logo_name.png')} style={styles.logon}/>
-            </View>
-            <LinearGradient colors={['#9E97D4', '#ffbe8f']} start={{ x: 0, y: 0 }} end={{ x: 1, y: 0}} style={styles.empty1}></LinearGradient>
-            <View style={styles.maincontainer}>
-                <Text style={styles.welcometext}>InterestMeet</Text>
-            </View>
-            <GiftedChat style = {styles.gc}
-              messages={messages}
-              onSend={messages => onSend(messages)}
-              user={{
-              _id: auth().currentUser.uid}}
-            />
-        </LinearGradient>
+    // <View>
+    //     <LinearGradient colors={['#2d2d2d', '#653942']} start={{ x: 0, y: 0.5 }} end={{ x: 0, y: 1}} style={styles.container}>
+    //         <View style={styles.navbar}>
+    //             <Logoanimation/>
+    //             <Image source={require('../assets/logo_name.png')} style={styles.logon}/>
+    //         </View>
+    //         <LinearGradient colors={['#9E97D4', '#ffbe8f']} start={{ x: 0, y: 0 }} end={{ x: 1, y: 0}} style={styles.empty1}></LinearGradient>
+    //         <View style={styles.maincontainer}>
+    //             <Text style={styles.welcometext}>InterestMeet</Text>
+    //         </View>
+    //         <GiftedChat 
+    //           messages={messages}
+    //           onSend={messages => onSend(messages)}
+    //           user={{
+    //           _id: auth().currentUser.uid}}
+    //         />
+    //     </LinearGradient>
         
+    // </View>
+    
+    <View style= {styles.newc1}>
+      <LinearGradient colors={['#2d2d2d', '#653942']} start={{ x: 0, y: 0.5 }} end={{ x: 0, y: 1}} style={styles.newc2}>
+        <View style={styles.navbar}>
+          <Logoanimation/>
+          <Image source={require('../assets/logo_name.png')} style={styles.logon}/>
+        </View>
+        <LinearGradient colors={['#9E97D4', '#ffbe8f']} start={{ x: 0, y: 0 }} end={{ x: 1, y: 0}} style={styles.empty1}></LinearGradient>
+        <View style={styles.maincontainer}>
+          <Text style={styles.welcometext}>You are connected on </Text>
+        </View>
+        
+      <GiftedChat 
+        messages={messages}
+        onSend={messages => onSend(messages)}
+        user={{
+        _id: auth().currentUser.uid}}
+        renderTime={renderTime}
+        renderBubble={renderBubble}
+        renderInputToolbar={props => customtInputToolbar(props)}
+        renderComposer={(props) => <Composer textInputStyle={{color: 'white'}} {...props} />}
+        // renderAvatar={nul}
+      />
+      <TouchableOpacity style={styles.addFriend} onPress={() => setAddf(['Friend Added','check-circle','white'])}>          
+        <LinearGradient colors={['#8d83e0', '#9E97D4']} start={{ x: 0, y: 0 }} end={{ x: 1, y: 0}} style={styles.newc3}>
+          <View style={styles.addfriendIcon}> 
+            <FontAwesome name={addf[1]} size={25} color={'#ffbe8f'}/>
+          </View>
+          <Text style={{color: addf[2], fontSize: 20, fontWeight: 'bold'}}>{addf[0]}</Text>
+        </LinearGradient>
+        </TouchableOpacity>
+      </LinearGradient>
     </View>
   );
 };
@@ -149,6 +264,21 @@ const InterestMeet = ({navigation, route}) => {
 export default InterestMeet;
 
 const styles = StyleSheet.create({
+  newc1: {
+    flex: 1,
+  },
+  newc2: {
+    flex: 1,
+  },
+  newc3: {
+    height: '100%',
+    flex: 1,
+    flexDirection: 'row',
+    borderTopLeftRadius: 20,
+    borderBottomLeftRadius: 20,
+    padding: 4,
+    alignItems: 'center'
+  },
   container: {
     justifyContent: 'flex-start',
     backgroundColor: '#2d2d2d',
@@ -160,8 +290,20 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     marginLeft: -25,
   },
-  gc : {
-    marginTop: -100
+  addFriend:{
+    height: 42,
+    width: 200,
+    position: 'absolute',
+    backgroundColor: '#8d83e0',
+    marginLeft: windowWidth-160,
+    marginTop: 116,
+    flexDirection: 'row',
+    alignItems: 'center',
+    borderTopLeftRadius: 20,
+    borderBottomLeftRadius: 20,
+  },
+  addfriendIcon: {
+    marginHorizontal: 6,
   },
   logoc: {
     height: 120,
