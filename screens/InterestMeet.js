@@ -29,20 +29,23 @@ const InterestMeet = ({navigation, route}) => {
 
   const [messages, setMessages] = useState([]);
 
+  const [roomId, setRoomId] = useState("");
+
   const RoomsCollection = firestore().collection('Rooms');
 
   const [addf, setAddf] = useState(['Add Friend','user-plus','#2d2d2d']);
 
-  let room;
-  let they;
-  let we;
+  let they = {};
+  let we = {};
+
+  Initialize();
 
   useFocusEffect(
     React.useCallback(() => {
       //Check if Room exists
       return () => {
         RoomsCollection
-          .doc(room.id)
+          .doc(roomId)
           .delete()
           .then(() => {
             console.log('Room Cleared');
@@ -51,6 +54,7 @@ const InterestMeet = ({navigation, route}) => {
     }, [])
   );
 
+  //Use Effect for back handle
   useEffect(() => {
     const backAction = () => {
       Alert.alert("Hold on!", "Are you sure you want to exit this room?", [
@@ -73,45 +77,36 @@ const InterestMeet = ({navigation, route}) => {
   }, []);
 
   useEffect(() => {
+    if(roomId !== ""){
+      console.log("Listening");
+      startListening();
+    }
+  }, []);
+
+  function Initialize(){
+    console.log("hi");
+    if(roomId !== ""){
+      return;
+    }
     const {roomName} = route.params;
 
     RoomsCollection.where('Connected', '<', 2).where("Interest", "==", roomName).get().then(querySnapshot => {
+
       let rooms = querySnapshot._docs;
+
       if(rooms.length > 0){
         //Rooms Available
-        room = rooms[0]._ref;
-        console.log(`RoomId: ${room.id}`);
-        RoomsCollection.doc(room.id).update({
+        console.log(`Setting Room Id: ${rooms[0]._ref.id}`);
+        setRoomId(rooms[0]._ref.id);
+
+        RoomsCollection.doc(rooms[0]._ref.id).update({
           'Connected': 2,
           'ConnectedUsers': firestore.FieldValue.arrayUnion(auth().currentUser.uid)
         })
         .then(() => {
-          console.log('Room Connected');
-          RoomsCollection.doc(room.id).onSnapshot(documentSnapshot => {
-            let updatedData = documentSnapshot.data();
-            //If we don't have the other user's id
-            if(!they.id){
-              updatedData.ConnectedUsers.forEach(user => {
-                if(user !== auth().currentUser.uid){
-                  they.id = user;
-                }
-              })
-            }
-
-            //Checking if we sent any message
-            console.log(updatedData[`${auth().currentUser.uid}_Message`]);
-            if(updatedData[`${auth().currentUser.uid}_Message`] !== we.previousMessage){
-              onSend([updatedData[`${auth().currentUser.uid}_Message`]])
-            }
-
-            //Checking if they sent any message
-            console.log(updatedData[`${they.id}_Message`]);
-            if(updatedData[`${they.id}_Message`] !== we.previousMessage){
-              onSend([updatedData[`${they.id}_Message`]])
-            }
-            console.log('User data: ', documentSnapshot.data());
-          });    
+          console.log('Room Connected');   
         });
+
       }else {
         //Create a new Room
         RoomsCollection.add({
@@ -120,33 +115,69 @@ const InterestMeet = ({navigation, route}) => {
           Connected: 1
         })
         .then((snapshot) => {
-          room = snapshot
-          console.log('Room Created and Waiting!');
-          RoomsCollection.doc(room.id).onSnapshot(documentSnapshot => {
-            console.log('User data: ', documentSnapshot.data());
-          }); 
-        });
-      
-      }
-      console.log(querySnapshot._docs);
-    });
-    
-    setMessages([
-      {
-        _id: 1,
-        text: 'Hello developer',
-        createdAt: new Date(),
-        user: {
-          _id: 2,
-          name: 'React Native',
-        },
-      },
-    ])
-  }, [])
+          console.log(snapshot);
 
-  const onSend = useCallback((messages = []) => {
-    setMessages(previousMessages => GiftedChat.append(previousMessages, messages))
-  }, [])
+          console.log(`Setting Room Id: ${rooms[0]._ref.id}`);
+          setRoomId(rooms[0]._ref.id);
+          ;
+          console.log('Room Created and Waiting!');
+        });
+      }
+    });
+  }
+
+  function startListening(){
+    RoomsCollection.doc(roomId).onSnapshot(documentSnapshot => {
+      let updatedData = documentSnapshot.data();
+      console.log(`Updated Data ${updatedData}`);
+      //If we don't have the other user's id
+      if(!they.id){
+        updatedData.ConnectedUsers.forEach(user => {
+          console.log(`User ${user}`);
+          if(user !== auth().currentUser.uid){
+            they.id = user;
+          }
+        })
+      }
+
+      if(!we.id){
+        we.id = auth().currentUser.uid;
+      }
+
+      //Checking if they sent any message
+      console.log(updatedData[`${they.id}_Message`]);
+      if(updatedData[`${they.id}_Message`] !== they.previousMessage){
+        onMessageReceive(
+          {
+            _id: new Date().getTime(),
+            text: updatedData[`${they.id}_Message`],
+            createdAt: new Date().getTime(),
+            user: {
+              _id: 2,
+              name: 'Test User'
+            }
+          }
+        )
+      }
+      console.log('User data: ', documentSnapshot.data());
+    }); 
+  }
+
+  function onMessageReceive(newMessage = []) {
+    setMessages(GiftedChat.append(messages, newMessage));
+  }
+
+  function onMessageSent(newMessage = []) {
+    console.log(`Message Sent: RoomId : ${roomId}`);
+    RoomsCollection.doc(roomId).update({
+      [`${we.id}_Message`]: newMessage[0].text
+    }).then(snapshot => {
+
+    }).catch(error => {
+      console.log(`Firebase Error ${error}`);
+    })
+    setMessages(GiftedChat.append(messages, newMessage));
+  }
 
   const renderBubble = (props) => {
     return (
@@ -239,7 +270,7 @@ const InterestMeet = ({navigation, route}) => {
         
       <GiftedChat 
         messages={messages}
-        onSend={messages => onSend(messages)}
+        onSend={newMessage => onMessageSent(newMessage)}
         user={{
         _id: auth().currentUser.uid}}
         renderTime={renderTime}
