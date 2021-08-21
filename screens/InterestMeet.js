@@ -1,4 +1,5 @@
 import React, {useContext, useEffect, useState, useCallback, Component} from 'react';
+import { useFocusEffect } from '@react-navigation/native';
 import {
   View,
   ScrollView,
@@ -23,45 +24,88 @@ import auth from '@react-native-firebase/auth';
 import firestore from '@react-native-firebase/firestore';
 
 const InterestMeet = ({navigation, route}) => {
-  console.log("hi");
-  const {roomName} = route.params;
-
-  console.log(roomName);
 
   const [messages, setMessages] = useState([]);
 
   const RoomsCollection = firestore().collection('Rooms');
 
-  const [room, setRoom] = useState([]);
+  let room;
+  let they;
+  let we;
 
-  RoomsCollection.where('Connected', '<', 2).where("Interest", "==", roomName).get().then(querySnapshot => {
-    let rooms = querySnapshot._docs;
-    if(rooms.length > 0){
-      //Rooms Available
-      setRoom(rooms[0]._ref);
-      room.update({
-        'Connected': 2,
-        'ConnectedUsers': firestore.FieldValue.arrayUnion(auth().currentUser.uid)
-      })
-      .then(() => {
-        console.log('Room Connected');
-      });
-    }else {
-      //Create a new Room
-      RoomsCollection.add({
-        Interest: roomName,
-        ConnectedUsers: [auth().currentUser.uid],
-        Connected: 1
-      })
-      .then(() => {
-        console.log('Room Created and Waiting!');
-      });
-    
-    }
-    console.log(querySnapshot._docs);
-  });
+  useFocusEffect(
+    React.useCallback(() => {
+      //Check if Room exists
+      return () => {
+        RoomsCollection
+          .doc(room.id)
+          .delete()
+          .then(() => {
+            console.log('Room Cleared');
+          });
+      };
+    }, [])
+  );
 
   useEffect(() => {
+    const {roomName} = route.params;
+
+    RoomsCollection.where('Connected', '<', 2).where("Interest", "==", roomName).get().then(querySnapshot => {
+      let rooms = querySnapshot._docs;
+      if(rooms.length > 0){
+        //Rooms Available
+        room = rooms[0]._ref;
+        console.log(`RoomId: ${room.id}`);
+        RoomsCollection.doc(room.id).update({
+          'Connected': 2,
+          'ConnectedUsers': firestore.FieldValue.arrayUnion(auth().currentUser.uid)
+        })
+        .then(() => {
+          console.log('Room Connected');
+          RoomsCollection.doc(room.id).onSnapshot(documentSnapshot => {
+            let updatedData = documentSnapshot.data();
+            //If we don't have the other user's id
+            if(!they.id){
+              updatedData.ConnectedUsers.forEach(user => {
+                if(user !== auth().currentUser.uid){
+                  they.id = user;
+                }
+              })
+            }
+
+            //Checking if we sent any message
+            console.log(updatedData[`${auth().currentUser.uid}_Message`]);
+            if(updatedData[`${auth().currentUser.uid}_Message`] !== we.previousMessage){
+              onSend([updatedData[`${auth().currentUser.uid}_Message`]])
+            }
+
+            //Checking if they sent any message
+            console.log(updatedData[`${they.id}_Message`]);
+            if(updatedData[`${they.id}_Message`] !== we.previousMessage){
+              onSend([updatedData[`${they.id}_Message`]])
+            }
+            console.log('User data: ', documentSnapshot.data());
+          });    
+        });
+      }else {
+        //Create a new Room
+        RoomsCollection.add({
+          Interest: roomName,
+          ConnectedUsers: [auth().currentUser.uid],
+          Connected: 1
+        })
+        .then((snapshot) => {
+          room = snapshot
+          console.log('Room Created and Waiting!');
+          RoomsCollection.doc(room.id).onSnapshot(documentSnapshot => {
+            console.log('User data: ', documentSnapshot.data());
+          }); 
+        });
+      
+      }
+      console.log(querySnapshot._docs);
+    });
+    
     setMessages([
       {
         _id: 1,
