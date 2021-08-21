@@ -77,10 +77,8 @@ const InterestMeet = ({navigation, route}) => {
   }, []);
 
   useEffect(() => {
-    if(roomId !== ""){
-      console.log("Listening");
-      startListening();
-    }
+    console.log("use Effect");
+    console.log(`RoomId ${roomId}`);
   }, []);
 
   function Initialize(){
@@ -105,6 +103,8 @@ const InterestMeet = ({navigation, route}) => {
         })
         .then(() => {
           console.log('Room Connected');   
+          console.log("Listening");
+          startListening(rooms[0]._ref.id);
         });
 
       }else {
@@ -115,19 +115,23 @@ const InterestMeet = ({navigation, route}) => {
           Connected: 1
         })
         .then((snapshot) => {
-          console.log(snapshot);
+          console.log(snapshot._documentPath._parts[1]);
 
-          console.log(`Setting Room Id: ${rooms[0]._ref.id}`);
-          setRoomId(rooms[0]._ref.id);
-          ;
+          console.log(`Setting Room Id: ${snapshot._documentPath._parts[1]}`);
+          setRoomId(snapshot._documentPath._parts[1]);
+
           console.log('Room Created and Waiting!');
+          console.log("Listening");
+          startListening(snapshot._documentPath._parts[1]);
         });
       }
     });
   }
 
-  function startListening(){
-    RoomsCollection.doc(roomId).onSnapshot(documentSnapshot => {
+  function startListening(roomUid){
+    console.log(`Room UID: ${roomUid}`);
+    RoomsCollection.doc(roomUid).onSnapshot(documentSnapshot => {
+      console.log(documentSnapshot);
       let updatedData = documentSnapshot.data();
       console.log(`Updated Data ${updatedData}`);
       //If we don't have the other user's id
@@ -140,21 +144,20 @@ const InterestMeet = ({navigation, route}) => {
         })
       }
 
-      if(!we.id){
-        we.id = auth().currentUser.uid;
-      }
-
       //Checking if they sent any message
       console.log(updatedData[`${they.id}_Message`]);
-      if(updatedData[`${they.id}_Message`] !== they.previousMessage){
+      if(updatedData[`${they.id}_Message`]){
+        RoomsCollection.doc(roomUid).update({
+          [`${they.id}_Message`]: firestore.FieldValue.delete()
+        });
         onMessageReceive(
           {
             _id: new Date().getTime(),
             text: updatedData[`${they.id}_Message`],
             createdAt: new Date().getTime(),
             user: {
-              _id: 2,
-              name: 'Test User'
+              _id: they.id,
+              name: they.id
             }
           }
         )
@@ -164,19 +167,19 @@ const InterestMeet = ({navigation, route}) => {
   }
 
   function onMessageReceive(newMessage = []) {
-    setMessages(GiftedChat.append(messages, newMessage));
+    setMessages(previousMessages => GiftedChat.append(previousMessages, newMessage));
   }
 
   function onMessageSent(newMessage = []) {
     console.log(`Message Sent: RoomId : ${roomId}`);
     RoomsCollection.doc(roomId).update({
-      [`${we.id}_Message`]: newMessage[0].text
+      [`${auth().currentUser.uid}_Message`]: newMessage[0].text
     }).then(snapshot => {
 
     }).catch(error => {
       console.log(`Firebase Error ${error}`);
     })
-    setMessages(GiftedChat.append(messages, newMessage));
+    setMessages(previousMessages => GiftedChat.append(previousMessages, newMessage));
   }
 
   const renderBubble = (props) => {
