@@ -31,6 +31,17 @@ const UserProfile1 = ({navigation}) => (
 );
 
 const AppStack = () => {
+  const getTabBarVisibility = (route) => {
+    const routeName = route.state
+      ? route.state.routes[route.state.index].name
+      : '';
+
+    if (routeName === 'InterestMeet') {
+      return false;
+    }
+    return true;
+  };
+
     return(
         <Tab.Navigator tabBarOptions={{
             activeTintColor: '#ffbe8f',
@@ -53,6 +64,7 @@ const AppStack = () => {
             <Tab.Screen name='Home' component={HomeScreen1} options={({route}) => ({
           tabBarLabel: '',
           unmountOnBlur: true,
+          tabBarVisible: getTabBarVisibility(route),
           // tabBarVisible: route.state && route.state.index === 0,
           tabBarIcon: ({color, size}) => (
             <FontAwesome5

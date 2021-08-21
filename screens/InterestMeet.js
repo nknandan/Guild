@@ -1,4 +1,4 @@
-import React, {useContext, useEffect, useState, useCallback, Component} from 'react';
+import React, {useContext, useEffect, useState, useCallback, KeyboardAvoidingView, Component} from 'react';
 import { useFocusEffect } from '@react-navigation/native';
 import {
   View,
@@ -134,7 +134,7 @@ const InterestMeet = ({navigation, route}) => {
             <View style={styles.maincontainer}>
                 <Text style={styles.welcometext}>InterestMeet</Text>
             </View>
-            <GiftedChat
+            <GiftedChat style = {styles.gc}
               messages={messages}
               onSend={messages => onSend(messages)}
               user={{
@@ -159,6 +159,9 @@ const styles = StyleSheet.create({
     backgroundColor: '#2d2d2d',
     flexDirection: 'row',
     marginLeft: -25,
+  },
+  gc : {
+    marginTop: -100
   },
   logoc: {
     height: 120,
