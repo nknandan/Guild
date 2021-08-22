@@ -110,7 +110,9 @@ const InterestMeet = ({navigation, route}) => {
                 setMessages([]);
                 Initialize();
               }},
-              {text: 'Cancel'},
+              {text: 'Cancel', onPress: () => {
+                navigation.goBack();
+              }},
             ],
             { cancelable: false }
           )
