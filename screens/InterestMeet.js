@@ -133,7 +133,24 @@ const InterestMeet = ({navigation, route}) => {
     RoomsCollection.doc(roomUid).onSnapshot(documentSnapshot => {
       console.log(documentSnapshot);
       let updatedData = documentSnapshot.data();
-      console.log(`Updated Data ${updatedData}`);
+      if(!updatedData){
+        //User Disconnected
+        if(!userExited){
+          Alert.alert(
+            'User Disconnected',
+            'Do you want to find a new user?',
+            [
+              {text: 'Reconnect', onPress: () => {
+                setMessages([]);
+                Initialize();
+              }},
+              {text: 'Cancel'},
+            ],
+            { cancelable: false }
+          )
+        }
+        return;
+      }
       //If we don't have the other user's id
       if(!they.id){
         updatedData.ConnectedUsers.forEach(user => {
