@@ -40,20 +40,6 @@ const InterestMeet = ({navigation, route}) => {
 
   Initialize();
 
-  useFocusEffect(
-    React.useCallback(() => {
-      //Check if Room exists
-      return () => {
-        RoomsCollection
-          .doc(roomId)
-          .delete()
-          .then(() => {
-            console.log('Room Cleared');
-          });
-      };
-    }, [])
-  );
-
   //Use Effect for back handle
   useEffect(() => {
     const backAction = () => {
@@ -63,7 +49,12 @@ const InterestMeet = ({navigation, route}) => {
           onPress: () => null,
           style: "cancel"
         },
-        { text: "YES", onPress: () => navigation.goBack()  }
+        { text: "YES", onPress: () => {
+          RoomsCollection.doc(roomId).delete().then(() => {
+            console.log('Room Cleared');
+          });
+          navigation.goBack()
+        }  }
       ]);
       return true;
     };
