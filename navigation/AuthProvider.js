@@ -19,6 +19,13 @@ export const AuthProvider = ({children}) => {
                         console.log(e);
                     }
                 },
+                passwordReset: async (email) => {
+                    try{
+                        return auth().sendPasswordResetEmail(email)
+                    }catch(e){
+                        console.log(e);
+                    }
+                },
                 googleLogin: async () => {
                     try{
                         // Get the users ID token

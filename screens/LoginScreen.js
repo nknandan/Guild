@@ -6,6 +6,7 @@ import FormInput from '../components/FormInput';
 import SocialButton from '../components/SocialButton';
 import { AuthContext } from '../navigation/AuthProvider';
 import LinearGradient from 'react-native-linear-gradient';
+import ForgotPassword from './ForgotPassword';
 
 
 const LoginScreen = ({navigation}) => {
@@ -99,7 +100,7 @@ const LoginScreen = ({navigation}) => {
                 }
             />
 
-            <TouchableOpacity style={styles.forgotButton} onPress={() => {}}>
+            <TouchableOpacity style={styles.forgotButton} onPress={() => {navigation.navigate(ForgotPassword)}}>
                 <Text style={styles.navButtonText}>Forgot Password?</Text>
             </TouchableOpacity>
 
