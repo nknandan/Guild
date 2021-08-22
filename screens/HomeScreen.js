@@ -23,7 +23,7 @@ import Logoanimation from '../components/LogoAnimation';
 const HomeScreen = ({navigation}) => {
   const {user, logout} = useContext(AuthContext);
 
-  let interests = ["Gaming", "Movie", "Valorant", "ANCD"]
+  let interests = ["Gaming", "Cryptocurrency", "Valorant", "Apex Legends", "Football", "Marvel", "React", "Graphics", "Fifa", "TV Series", "Fiction", "Sherlock Holmes", "Web Development", "Trading"]
   
   let interestBarArray = interests.map((interest, index) => (
     <InterestBar key={index} buttonTitle={interest} onPress={() => navigation.navigate('InterestMeet', {roomName: interest})}/>

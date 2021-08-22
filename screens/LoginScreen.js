@@ -12,22 +12,36 @@ const LoginScreen = ({navigation}) => {
   
     const [email,setEmail] = useState();
     const [password,setPassword] = useState();
+
     const [data,setData] = useState({
-      isValidUser: true,
-      isValidPassword: true,  
+      validPassword: true,
+      validUsername: true,
     });
+
+    const [blankCheck,setblankCheck] = useState({
+      validEmail: false,
+      validPassword: false,
+    });
+
     const {login, googleLogin} = useContext(AuthContext);
 
-    const handleValidUser = (val) => {
+    const handleValidPassword = (val) => {
       if( val.trim().length >= 8 ) {
         setData({
             ...data,
-            isValidPassword: true
+            validPassword: true
         });
-      } else {
+      } 
+      else if( val.trim().length == 0 ) {
+        setData({
+            ...data,
+            validPassword: true
+        });
+      } 
+      else {
           setData({
               ...data,
-              isValidPassword: false
+              validPassword: false
           });
       }
     }
@@ -38,7 +52,12 @@ const LoginScreen = ({navigation}) => {
             <Image source={require('../assets/logo.png')} style={styles.logo}/>
             <FormInput 
                 labelValue={email}
-                onChangeText={(userEmail) => setEmail(userEmail)}
+                onChangeText={(userEmail) => {
+                  setEmail(userEmail)
+                  setblankCheck({
+                    validEmail: true,
+                  })
+                }}
                 placeholderText="Email" 
                 iconType="user" 
                 keyboardType="email-address"
@@ -48,20 +67,36 @@ const LoginScreen = ({navigation}) => {
 
             <FormInput 
                 labelValue={password}
-                onChangeText={(userPassword) => setPassword(userPassword)}
+                onChangeText={(userPassword) => {
+                  setPassword(userPassword)
+                  handleValidPassword(userPassword)
+                  setblankCheck({
+                    validPassword: true,
+                  })
+                }}
                 placeholderText="Password" 
                 iconType="lock" 
                 secureTextEntry={true}
-                onEndEditing={(e)=>handleValidUser(e.nativeEvent.text)}
             />
-            { data.isValidPassword ? null : 
-            <View animation="fadeInLeft" duration={500}>
-            <Text style={styles.errorMsg}>Password must be 8 characters long.</Text>
-            </View>
+
+            { data.validPassword ? null : 
+              <View animation="fadeInLeft" duration={500}>
+              <Text style={styles.errorMsg}>Password must be 8 characters long.</Text>
+              </View>
             }
             <FormButton
                 buttonTitle="Log In"
-                onPress={() => login(email, password)}
+                onPress={() => {
+                    if(blankCheck.validEmail||blankCheck.validPassword == false){
+                      alert("Atleast Enter valid details");
+                    }
+                    else if(data.validPassword == true){
+                      login(email, password)
+                    }else{
+                      alert("Enter valid details");
+                    }
+                  }
+                }
             />
 
             <TouchableOpacity style={styles.forgotButton} onPress={() => {}}>
@@ -122,7 +157,7 @@ const styles = StyleSheet.create({
       color: '#051d5f',
     },
     errorMsg: {
-      color: '#FF0000',
+      color: '#E08384',
       fontSize: 14,
     },
     navButton: {

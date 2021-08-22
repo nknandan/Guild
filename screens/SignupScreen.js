@@ -14,6 +14,82 @@ const SignupScreen = ({navigation}) => {
     const [password,setPassword] = useState();
     const [confirmPassword, setConfirmPassword] = useState();
 
+    const [data,setData] = useState({
+      validPassword: true,
+      validUsername: true,
+      validConfirmPassword: true
+    });
+
+    const [blankCheck,setblankCheck] = useState({
+      validEmail: false,
+      validUsername: false,
+      validPassword: false,
+      validConfirmPassword: false,
+    });
+
+    const handelValidUsername = (val) => {
+      if( val.trim().length >= 4 ) {
+        setData({
+            ...data,
+            validUsername: true
+        });
+      } 
+      else if( val.trim().length == 0 ) {
+        setData({
+            ...data,
+            validUsername: true
+        });
+      } 
+      else {
+          setData({
+              ...data,
+              validUsername: false
+          });
+      }
+    }
+
+    const handleValidPassword = (val) => {
+      if( val.trim().length >= 8 ) {
+        setData({
+            ...data,
+            validPassword: true
+        });
+      } 
+      else if( val.trim().length == 0 ) {
+        setData({
+            ...data,
+            validPassword: true
+        });
+      } 
+      else {
+          setData({
+              ...data,
+              validPassword: false
+          });
+      }
+    }
+
+    const handleValidConfirmPassword = (val) => {
+      if( val.trim() == password ) {
+        setData({
+            ...data,
+            validConfirmPassword: true
+        });
+      } 
+      else if( val.trim().length == 0 ) {
+        setData({
+            ...data,
+            validConfirmPassword: true
+        });
+      } 
+      else {
+          setData({
+              ...data,
+              validConfirmPassword: false
+          });
+      }
+    }
+
     const {register, googleLogin} = useContext(AuthContext);
 
     return (
@@ -22,84 +98,133 @@ const SignupScreen = ({navigation}) => {
             {/* <Image source={require('../assets/logo.png')} style={styles.logo}/> */}
             <Text style={styles.text}>Create an account</Text>
             <FormInput 
-                labelValue={email}
-                onChangeText={(userEmail) => setEmail(userEmail)}
-                placeholderText="Email" 
-                iconType="user" 
-                keyboardType="email-address"
-                autoCapitalize="none"
-                autoCorrect={false}    
+              labelValue={email}
+              onChangeText={(userEmail) => {
+                setEmail(userEmail)
+                setblankCheck({
+                  validEmail: true,
+                })
+              }
+              }
+              placeholderText="Email" 
+              iconType="user" 
+              keyboardType="email-address"
+              autoCapitalize="none"
+              autoCorrect={false}    
             />
             <FormInput 
-                labelValue={name}
-                onChangeText={(userName) => setName(userName)}
-                placeholderText="Name" 
-                iconType="user" 
-                autoCapitalize="true"
-                autoCorrect={false}    
+              labelValue={name}
+              onChangeText={(userName) => {
+                setName(userName)
+                handelValidUsername(userName)
+                setblankCheck({
+                  validUsername: true,
+                })
+              }}
+              placeholderText="Name"
+              iconType="user" 
+              autoCapitalize="true"
+              autoCorrect={false}    
             />
 
+            { data.validUsername ? null : 
+              <View animation="fadeInLeft" duration={500}>
+              <Text style={styles.errorMsg}>Username must be 4 characters long.</Text>
+              </View>
+            }
+
             <FormInput 
-                labelValue={password}
-                onChangeText={(userPassword) => setPassword(userPassword)}
-                placeholderText="Password" 
-                iconType="lock" 
-                secureTextEntry={true}
+              labelValue={password}
+              onChangeText={(userPassword) => {
+                setPassword(userPassword)
+                handleValidPassword(userPassword)
+                setblankCheck({
+                  validPassword: true,
+                })
+              }}
+              placeholderText="Password" 
+              iconType="lock" 
+              secureTextEntry={true}
             />
+
+            { data.validPassword ? null : 
+              <View animation="fadeInLeft" duration={500}>
+              <Text style={styles.errorMsg}>Password must be 8 characters long.</Text>
+              </View>
+            }
 
             <FormInput
-                    labelValue={confirmPassword}
-                    onChangeText={(userPassword) => setConfirmPassword(userPassword)}
-                    placeholderText="Confirm Password"
-                    iconType="lock"
-                    secureTextEntry={true}
-                  />
-
-            <FormButton
-                buttonTitle="Sign Up"
-                onPress={() => register(name, email, password)}
+              labelValue={confirmPassword}
+              onChangeText={(userPassword) => {
+                setConfirmPassword(userPassword)
+                handleValidConfirmPassword(userPassword)
+                setblankCheck({
+                  validConfirmPassword: true,
+                })
+              }
+              }
+              placeholderText="Confirm Password"
+              iconType="lock"
+              secureTextEntry={true}
             />
 
-            <View style={styles.textPrivate}>
-                <Text style={styles.color_textPrivate}>
-                By registering, you confirm that you accept our{' '}
-                </Text>
-                <TouchableOpacity onPress={() => alert('Terms Clicked!')}>
-                <Text style={[styles.color_textPrivate, {color: '#e88832'}]}>
-                    Terms of service
-                </Text>
-                </TouchableOpacity>
-                <Text style={styles.color_textPrivate}> and </Text>
-                <Text style={[styles.color_textPrivate, {color: '#e88832'}]}>
-                Privacy Policy
-                </Text>
+            { data.validConfirmPassword ? null : 
+              <View animation="fadeInLeft" duration={500}>
+              <Text style={styles.errorMsg}>Passwords do not match.</Text>
+              </View>
+            }
+
+            <View style={styles.empty1}></View>
+
+            <View style={styles.container1}>
+              <FormButton
+                  buttonTitle="Sign Up"
+                  onPress={() => {
+                    if(blankCheck.validEmail||blankCheck.validPassword||blankCheck.validUsername||blankCheck.validConfirmPassword == false){
+                      alert("Atleast Enter valid details");
+                    }
+                    else if(data.validPassword&&data.validUsername&&data.validConfirmPassword == true){
+                      register(name, email, password)
+                    }else{
+                      alert("Enter valid details");
+                    }
+                    }
+                  }
+              />
+
+              <View style={styles.textPrivate}>
+                  <Text style={styles.color_textPrivate}>
+                  By registering, you confirm that you accept our{' '}
+                  </Text>
+                  <TouchableOpacity onPress={() => alert('Terms Clicked!')}>
+                  <Text style={[styles.color_textPrivate, {color: '#e88832'}]}>
+                      Terms of service
+                  </Text>
+                  </TouchableOpacity>
+                  <Text style={styles.color_textPrivate}> and </Text>
+                  <Text style={[styles.color_textPrivate, {color: '#e88832'}]}>
+                  Privacy Policy
+                  </Text>
+              </View>
+
+              <View style={styles.empty}></View>
+
+              <SocialButton
+                  buttonTitle="Sign Up with Google"
+                  btnType="google"
+                  color="#de4d41"
+                  backgroundColor="#f5e7ea"
+                  onPress={() => googleLogin()}
+              />
+
+              <TouchableOpacity
+                  style={styles.navButton1}
+                  onPress={() => navigation.navigate('Login')}>
+                  <Text style={styles.navButtonText}>Have an account? Log In</Text>
+              </TouchableOpacity>
+
             </View>
 
-            {/* <SocialButton
-                buttonTitle="Sign Up with Facebook"
-                btnType="facebook"
-                color="#4867aa"
-                backgroundColor="#e6eaf4"
-                onPress={() => fbLogin()}
-            /> */}
-
-            <View style={styles.empty}>
-
-            </View>
-
-            <SocialButton
-                buttonTitle="Sign Up with Google"
-                btnType="google"
-                color="#de4d41"
-                backgroundColor="#f5e7ea"
-                onPress={() => googleLogin()}
-            />
-
-            <TouchableOpacity
-                style={styles.navButton1}
-                onPress={() => navigation.navigate('Login')}>
-                <Text style={styles.navButtonText}>Have an account? Log In</Text>
-            </TouchableOpacity>
           </LinearGradient>
         </View>
     );
@@ -117,11 +242,25 @@ const styles = StyleSheet.create({
       height: windowHeight,
       marginTop: -50,
     },
+    container1: {
+      marginTop: 366,
+      position: 'absolute',
+      alignItems: 'center',
+      padding: 20,
+      paddingTop: 50,
+      backgroundColor: 'transparent',
+      height: windowHeight,
+      width: '110%',
+    },
     logo: {
       height: 150,
       width: 150,
       resizeMode: 'cover',
       marginTop: -0,
+    },
+    errorMsg: {
+      color: '#E08384',
+      fontSize: 14,
     },
     text: {
       fontFamily: 'Kufam-SemiBoldItalic',
@@ -130,14 +269,8 @@ const styles = StyleSheet.create({
       marginBottom: 10,
       color: '#ffbe8f',
     },
-    navButton: {
-      marginTop: 15,
-    },
     navButton1: {
         margin: 25,
-    },
-    forgotButton: {
-      marginVertical: 35,
     },
     navButtonText: {
       marginTop: -8,
@@ -151,7 +284,7 @@ const styles = StyleSheet.create({
         flexWrap: 'wrap',
         marginVertical: 35,
         justifyContent: 'center',
-        marginBottom: 70,
+        marginBottom: 20,
       },
       color_textPrivate: {
         fontSize: 13,
@@ -159,7 +292,7 @@ const styles = StyleSheet.create({
         fontFamily: 'Lato-Regular',
         color: 'white',
       },
-      empty: {
-        marginBottom: 6,
-      }
+      // empty: {
+      //   marginBottom: 6,
+      // },
   });

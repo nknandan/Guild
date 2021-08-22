@@ -4,9 +4,9 @@ import { windowWidth, windowHeight } from '../utils/Dimentions';
 import AntDesign from 'react-native-vector-icons/AntDesign';
 
 
-const FormButton = ({labelValue, placeholderText, iconType, ...rest}) => {
+const FormButton = ({labelValue, placeholderText, iconType, error, ...rest}) => {
     return(
-        <View style={styles.inputContainer}>
+        <View style={styles.inputContainer} >
             <View style={styles.iconStyle}>
                 <AntDesign name={iconType} size={25} color="#8d83e0"/>
             </View>
