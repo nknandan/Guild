@@ -1,6 +1,7 @@
 import React, {createContext, useState} from 'react';
 import auth from '@react-native-firebase/auth';
 import { GoogleSignin } from '@react-native-google-signin/google-signin';
+import firestore from '@react-native-firebase/firestore';
 
 export const AuthContext = createContext();
 
@@ -46,11 +47,20 @@ export const AuthProvider = ({children}) => {
                         const update = {
                             displayName: name
                         };
-                        
                         auth().currentUser.updateProfile(update).then(() => {
                             //User Created Successfully and Name set
-                            console.log("SignUp Success");
+                            firestore().collection("Users").doc(auth().currentUser.uid).set({
+                                Name: name,
+                                Friends: {},
+                                UserUid: auth().currentUser.uid
+                            }).then(() => {
+                                console.log("SignUp Success");
                             //TODO: Show A Notification or toast
+                            }).catch(e => {
+                                console.log(e);
+                                //Failed to Save User Data
+                            })
+                            
                         }).catch((error) => {
                             //Failed to Set User's Name so deleting the user
                             auth().currentUser.delete();

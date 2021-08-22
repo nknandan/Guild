@@ -31,11 +31,15 @@ const InterestMeet = ({navigation, route}) => {
 
   const [roomId, setRoomId] = useState("");
 
+  const [otherUserId, setOtherUserId] = useState("");
+
+  const [otherUserName, setOtherUserName] = useState("");
+
   const RoomsCollection = firestore().collection('Rooms');
 
-  const [addf, setAddf] = useState(['Add Friend','user-plus','#2d2d2d']);
+  const UsersCollection = firestore().collection('Users');
 
-  let they = {};
+  const [addf, setAddf] = useState(['Add Friend','user-plus','#2d2d2d']);
 
   let userExited = false;
 
@@ -95,7 +99,11 @@ const InterestMeet = ({navigation, route}) => {
   }
 
   function startListening(roomUid){
+    let connectedUserId;
+    let connectedUserName;
+
     console.log(`Room UID: ${roomUid}`);
+
     RoomsCollection.doc(roomUid).onSnapshot(documentSnapshot => {
       console.log(documentSnapshot);
       let updatedData = documentSnapshot.data();
@@ -119,35 +127,52 @@ const InterestMeet = ({navigation, route}) => {
         }
         return;
       }
-      //If we don't have the other user's id
-      if(!they.id){
-        updatedData.ConnectedUsers.forEach(user => {
-          console.log(`User ${user}`);
-          if(user !== auth().currentUser.uid){
-            they.id = user;
-          }
-        })
+
+      //Get user Details 
+      if(!connectedUserId || !otherUserId){
+        //Get User id
+        if(!otherUserId || !connectedUserId){
+          updatedData.ConnectedUsers.forEach(user => {
+            console.log(`User ${user}`);
+            if(user !== auth().currentUser.uid){
+              connectedUserId = user;
+              setOtherUserId(user);
+            }
+          })
+        }
+      }
+
+      if(!connectedUserName || !otherUserName){
+        //Get user Name
+        UsersCollection.doc(connectedUserId).get().then(snapshot => {
+          let userData = snapshot.data();
+          connectedUserName = userData.Name;
+          setOtherUserName(connectedUserName);
+        }).catch(e => {
+          console.log(e);
+        });
       }
 
       //Checking if they sent any message
-      console.log(updatedData[`${they.id}_Message`]);
-      if(updatedData[`${they.id}_Message`]){
+      console.log(updatedData[`${connectedUserId}_Message`]);
+
+      if(updatedData[`${connectedUserId}_Message`]){
         RoomsCollection.doc(roomUid).update({
-          [`${they.id}_Message`]: firestore.FieldValue.delete()
+          [`${connectedUserId}_Message`]: firestore.FieldValue.delete()
         });
         onMessageReceive(
           {
             _id: new Date().getTime(),
-            text: updatedData[`${they.id}_Message`],
+            text: updatedData[`${connectedUserId}_Message`],
             createdAt: new Date().getTime(),
             user: {
-              _id: they.id,
-              name: they.id
+              _id: connectedUserId,
+              name: connectedUserName
             }
           }
         )
       }
-      console.log('User data: ', documentSnapshot.data());
+      console.log('Room data: ', documentSnapshot.data());
     }); 
 
     const backAction = () => {
@@ -247,6 +272,18 @@ const InterestMeet = ({navigation, route}) => {
     );
   };
 
+  function addFriend(){
+    console.log(`OtherUserId ${otherUserId}`);
+    UsersCollection.doc(auth().currentUser.uid).update({
+      [`Friends.${otherUserId}`]: roomId
+    }).then(() => {
+      //Added Friend
+      setAddf(['Friend Added','check-circle','white']);
+    }).catch(e => {
+      console.log(e);
+    })
+  }
+
 
   return(
       <View style= {styles.newc1}>
@@ -267,11 +304,14 @@ const InterestMeet = ({navigation, route}) => {
         _id: auth().currentUser.uid}}
         renderTime={renderTime}
         renderBubble={renderBubble}
+        renderUsernameOnMessage={true}
         renderInputToolbar={props => customtInputToolbar(props)}
         renderComposer={(props) => <Composer textInputStyle={{color: 'white'}} {...props} />}
         // renderAvatar={nul}
       />
-      <TouchableOpacity style={styles.addFriend} onPress={() => setAddf(['Friend Added','check-circle','white'])}>          
+      <TouchableOpacity style={styles.addFriend} onPress={() => {
+        addFriend();
+        }}>          
         <LinearGradient colors={['#8d83e0', '#9E97D4']} start={{ x: 0, y: 0 }} end={{ x: 1, y: 0}} style={styles.newc3}>
           <View style={styles.addfriendIcon}> 
             <FontAwesome name={addf[1]} size={25} color={'#ffbe8f'}/>
