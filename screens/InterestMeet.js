@@ -36,36 +36,10 @@ const InterestMeet = ({navigation, route}) => {
   const [addf, setAddf] = useState(['Add Friend','user-plus','#2d2d2d']);
 
   let they = {};
-  let we = {};
+
+  let userExited = false;
 
   Initialize();
-
-  //Use Effect for back handle
-  useEffect(() => {
-    const backAction = () => {
-      Alert.alert("Hold on!", "Are you sure you want to exit this room?", [
-        {
-          text: "Cancel",
-          onPress: () => null,
-          style: "cancel"
-        },
-        { text: "YES", onPress: () => {
-          RoomsCollection.doc(roomId).delete().then(() => {
-            console.log('Room Cleared');
-          });
-          navigation.goBack()
-        }  }
-      ]);
-      return true;
-    };
-
-    const backHandler = BackHandler.addEventListener(
-      "hardwareBackPress",
-      backAction
-    );
-
-    return () => backHandler.remove();
-  }, []);
 
   useEffect(() => {
     console.log("use Effect");
@@ -74,6 +48,7 @@ const InterestMeet = ({navigation, route}) => {
 
   function Initialize(){
     console.log("hi");
+    console.log(`STRAT ROOM ${JSON.stringify(roomId)}`);
     if(roomId !== ""){
       return;
     }
@@ -172,6 +147,30 @@ const InterestMeet = ({navigation, route}) => {
       }
       console.log('User data: ', documentSnapshot.data());
     }); 
+
+    const backAction = () => {
+      Alert.alert("Hold on!", "Are you sure you want to exit this room?", [
+        {
+          text: "Cancel",
+          onPress: () => null,
+          style: "cancel"
+        },
+        { text: "YES", onPress: () => {
+          console.log(`Remove RoomId: ${roomUid}`);
+          userExited = true;
+          RoomsCollection.doc(roomUid).delete().then(() => {
+            console.log('Room Cleared');
+          });
+          navigation.goBack()
+        }  }
+      ]);
+      return true;
+    };
+
+    const backHandler = BackHandler.addEventListener(
+      "hardwareBackPress",
+      backAction
+    );
   }
 
   function onMessageReceive(newMessage = []) {
