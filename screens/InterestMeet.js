@@ -240,27 +240,7 @@ const InterestMeet = ({navigation, route}) => {
 
 
   return(
-    // <View>
-    //     <LinearGradient colors={['#2d2d2d', '#653942']} start={{ x: 0, y: 0.5 }} end={{ x: 0, y: 1}} style={styles.container}>
-    //         <View style={styles.navbar}>
-    //             <Logoanimation/>
-    //             <Image source={require('../assets/logo_name.png')} style={styles.logon}/>
-    //         </View>
-    //         <LinearGradient colors={['#9E97D4', '#ffbe8f']} start={{ x: 0, y: 0 }} end={{ x: 1, y: 0}} style={styles.empty1}></LinearGradient>
-    //         <View style={styles.maincontainer}>
-    //             <Text style={styles.welcometext}>InterestMeet</Text>
-    //         </View>
-    //         <GiftedChat 
-    //           messages={messages}
-    //           onSend={messages => onSend(messages)}
-    //           user={{
-    //           _id: auth().currentUser.uid}}
-    //         />
-    //     </LinearGradient>
-        
-    // </View>
-    
-    <View style= {styles.newc1}>
+      <View style= {styles.newc1}>
       <LinearGradient colors={['#2d2d2d', '#653942']} start={{ x: 0, y: 0.5 }} end={{ x: 0, y: 1}} style={styles.newc2}>
         <View style={styles.navbar}>
           <Logoanimation/>

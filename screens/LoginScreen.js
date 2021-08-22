@@ -12,7 +12,25 @@ const LoginScreen = ({navigation}) => {
   
     const [email,setEmail] = useState();
     const [password,setPassword] = useState();
+    const [data,setData] = useState({
+      isValidUser: true,
+      isValidPassword: true,  
+    });
     const {login, googleLogin} = useContext(AuthContext);
+
+    const handleValidUser = (val) => {
+      if( val.trim().length >= 8 ) {
+        setData({
+            ...data,
+            isValidPassword: true
+        });
+      } else {
+          setData({
+              ...data,
+              isValidPassword: false
+          });
+      }
+    }
 
     return (
         <View>
@@ -34,8 +52,13 @@ const LoginScreen = ({navigation}) => {
                 placeholderText="Password" 
                 iconType="lock" 
                 secureTextEntry={true}
+                onEndEditing={(e)=>handleValidUser(e.nativeEvent.text)}
             />
-
+            { data.isValidPassword ? null : 
+            <View animation="fadeInLeft" duration={500}>
+            <Text style={styles.errorMsg}>Password must be 8 characters long.</Text>
+            </View>
+            }
             <FormButton
                 buttonTitle="Log In"
                 onPress={() => login(email, password)}
@@ -97,6 +120,10 @@ const styles = StyleSheet.create({
       fontSize: 28,
       marginBottom: 10,
       color: '#051d5f',
+    },
+    errorMsg: {
+      color: '#FF0000',
+      fontSize: 14,
     },
     navButton: {
       marginTop: 15,
