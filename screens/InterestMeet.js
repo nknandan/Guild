@@ -29,15 +29,14 @@ const InterestMeet = ({navigation, route}) => {
 
   const [messages, setMessages] = useState([]);
 
-  let roomId;
+  const [roomId, setRoomId] = useState("");
 
   const RoomsCollection = firestore().collection('Rooms');
 
   const [addf, setAddf] = useState(['Add Friend','user-plus','#2d2d2d']);
 
   let they = {};
-
-  let userExited = false;
+  let we = {};
 
   Initialize();
 
@@ -45,7 +44,6 @@ const InterestMeet = ({navigation, route}) => {
     React.useCallback(() => {
       //Check if Room exists
       return () => {
-        console.log(roomId);
         RoomsCollection
           .doc(roomId)
           .delete()
@@ -65,10 +63,7 @@ const InterestMeet = ({navigation, route}) => {
           onPress: () => null,
           style: "cancel"
         },
-        { text: "YES", onPress: () => {
-          userExited = true;
-          navigation.goBack() 
-        } }
+        { text: "YES", onPress: () => navigation.goBack()  }
       ]);
       return true;
     };
@@ -81,9 +76,16 @@ const InterestMeet = ({navigation, route}) => {
     return () => backHandler.remove();
   }, []);
 
+  useEffect(() => {
+    console.log("use Effect");
+    console.log(`RoomId ${roomId}`);
+  }, []);
 
   function Initialize(){
-
+    console.log("hi");
+    if(roomId !== ""){
+      return;
+    }
     const {roomName} = route.params;
 
     RoomsCollection.where('Connected', '<', 2).where("Interest", "==", roomName).get().then(querySnapshot => {
@@ -93,6 +95,7 @@ const InterestMeet = ({navigation, route}) => {
       if(rooms.length > 0){
         //Rooms Available
         console.log(`Setting Room Id: ${rooms[0]._ref.id}`);
+        setRoomId(rooms[0]._ref.id);
 
         RoomsCollection.doc(rooms[0]._ref.id).update({
           'Connected': 2,
@@ -115,6 +118,7 @@ const InterestMeet = ({navigation, route}) => {
           console.log(snapshot._documentPath._parts[1]);
 
           console.log(`Setting Room Id: ${snapshot._documentPath._parts[1]}`);
+          setRoomId(snapshot._documentPath._parts[1]);
 
           console.log('Room Created and Waiting!');
           console.log("Listening");
@@ -125,32 +129,15 @@ const InterestMeet = ({navigation, route}) => {
   }
 
   function startListening(roomUid){
-    roomId = roomUid;
     console.log(`Room UID: ${roomUid}`);
     RoomsCollection.doc(roomUid).onSnapshot(documentSnapshot => {
+      console.log(documentSnapshot);
       let updatedData = documentSnapshot.data();
-      if(!updatedData){
-        //User Disconnected
-        if(!userExited){
-          Alert.alert(
-            'User Disconnected',
-            'Do you want to find a new user?',
-            [
-              {text: 'Reconnect', onPress: () => {
-                setMessages([]);
-                Initialize();
-              }},
-              {text: 'Cancel'},
-            ],
-            { cancelable: false }
-          )
-        }
-        return;
-      }
+      console.log(`Updated Data ${updatedData}`);
       //If we don't have the other user's id
       if(!they.id){
         updatedData.ConnectedUsers.forEach(user => {
-          console.log(`Connected User ${user}`);
+          console.log(`User ${user}`);
           if(user !== auth().currentUser.uid){
             they.id = user;
           }
