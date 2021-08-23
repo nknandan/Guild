@@ -107,6 +107,7 @@ const InterestMeet = ({navigation, route}) => {
             [
               {text: 'Reconnect', onPress: () => {
                 setMessages([]);
+                setOtherUserId("");
                 Initialize();
               }},
               {text: 'Cancel', onPress: () => {
