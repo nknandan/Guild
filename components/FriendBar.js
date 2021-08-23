@@ -1,16 +1,19 @@
 import React from 'react';
 import { View, Text, TouchableOpacity, StyleSheet } from 'react-native';
 import FontAwesome from 'react-native-vector-icons/FontAwesome';
-
+import { useNavigation } from '@react-navigation/native';
 
 const FriendBar = ({friendName, ...rest}) => {
+
+    const navigation = useNavigation();
+
     return(
         <View style={styles.container}>
-            <TouchableOpacity style={styles.containerButton}>
+            <View style={styles.containerButton}>
                 <Text style={styles.userName}>John Doe</Text>
-            </TouchableOpacity>    
-            <TouchableOpacity>
-                <FontAwesome name={'comment'} size={25} color={'#ffbe8f'}/>
+            </View>    
+            <TouchableOpacity style={styles.chatIcon} onPress={() => {navigation.navigate('ChatScreen')}}>
+                <FontAwesome name={'comments'} size={25} color={'#ffbe8f'}/>
             </TouchableOpacity>                                    
             <View style={styles.bar}></View>
         </View>
@@ -33,8 +36,11 @@ const styles = StyleSheet.create({
     userName: {
         fontSize: 20,
         color: '#8d83e0',
-        marginRight: 210,
+        marginRight: 200,
         fontWeight: 'bold'
+    },
+    chatIcon: {
+        marginLeft: -2,
     },
     bar: {
         height: 1,

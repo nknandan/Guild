@@ -1,26 +1,17 @@
 import React, {useContext, useEffect, useState, Component} from 'react';
 import {
   View,
-  ScrollView,
   Text,
   StyleSheet,
-  FlatList,
-  SafeAreaView,
-  Alert,
   Image,
   TouchableOpacity,
-  Animated,
 } from 'react-native';
 import { AuthContext } from '../navigation/AuthProvider';
 import { windowHeight } from '../utils/Dimentions';
 import LinearGradient from 'react-native-linear-gradient';
-import FontAwesome from 'react-native-vector-icons/FontAwesome';
 import FormInput from '../components/FormInput';
 import FormButton from '../components/FormButton';
-import Icon from 'react-native-vector-icons/FontAwesome';
-import InterestBar from '../components/InterestBar';
 import Logoanimation from '../components/LogoAnimation';
-import LoginScreen from './LoginScreen';
 
 const ForgotPassword = ({navigation}) => {
 

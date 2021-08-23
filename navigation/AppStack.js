@@ -8,6 +8,7 @@ import FontAwesome5 from 'react-native-vector-icons/FontAwesome5';
 import HomeScreen from '../screens/HomeScreen';
 import InterestMeet from '../screens/InterestMeet';
 import MessagesScreen from '../screens/MessagesScreen';
+import ChatScreen from '../screens/ChatScreen';
 import UserProfile from '../screens/UserProfile';
 import { StyleSheet } from 'react-native';
 
@@ -20,6 +21,7 @@ const HomeScreen1 = ({navigation}) => (
     <Stack.Screen name="HomeScreen" component={HomeScreen} options={{header:() => null}}/>
     <Stack.Screen name="InterestMeet" component={InterestMeet} options={{header:() => null}}/>
     <Stack.Screen name="MessagesScreen" component={MessagesScreen} options={{header:() => null}}/>
+    <Stack.Screen name="ChatScreen" component={ChatScreen} options={{header:() => null}}/>
   </Stack.Navigator>
 );
 
@@ -27,6 +29,7 @@ const UserProfile1 = ({navigation}) => (
   <Stack.Navigator>
     <Stack.Screen name="UserProfile" component={UserProfile} options={{header:() => null}}/>
     <Stack.Screen name="MessagesScreen" component={MessagesScreen} options={{header:() => null}}/>
+    <Stack.Screen name="ChatScreen" component={ChatScreen} options={{header:() => null}}/>
   </Stack.Navigator>
 );
 

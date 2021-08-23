@@ -78,7 +78,7 @@ const styles = StyleSheet.create({
   scrollViewS: {
     paddingTop: 12,
     height: 555,
-    width: '100%'
+    width: '104%'
   },
   empty1: {
     height: 2,

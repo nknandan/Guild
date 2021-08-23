@@ -1,11 +1,15 @@
 import React from 'react';
 import { View, Text, TouchableOpacity, StyleSheet } from 'react-native';
-import FontAwesome from 'react-native-vector-icons/FontAwesome';
+import { useNavigation } from '@react-navigation/native';
 
 
 const MessageComponent = ({friendName, messageText, messageTime, ...rest}) => {
+
+    const navigation = useNavigation();
     return(
-        <TouchableOpacity style={styles.container}>
+        <TouchableOpacity style={styles.container}{...rest} onPress={() => {
+            console.log('chatscreen pressed');
+            navigation.navigate('ChatScreen')}}>
                 <Text style={styles.userName}>John Doe</Text>      
                 <View style={styles.messageContainer}>
                     <Text style={styles.message}>Lorem Ipsum inki ponki shunki adzn chokli inki ponki shunki adzn chokli inki ponki shunki adzn chokli</Text>      
@@ -13,7 +17,7 @@ const MessageComponent = ({friendName, messageText, messageTime, ...rest}) => {
                 <View style={styles.timeContainer}>
                     <Text style={styles.time}>9:32 pm</Text>
                 </View>                               
-            <View style={styles.bar}></View>
+            {/* <View style={styles.bar}></View> */}
         </TouchableOpacity>
     );
 };
@@ -24,10 +28,12 @@ const styles = StyleSheet.create({
     container: {
         padding: 7,
         paddingTop: 0,
-        height: 70,
+        height: 80,
         backgroundColor: 'rgba(0,0,0,0.1)',
-        marginBottom: 4,
+        marginBottom: 10,
         borderRadius: 10,
+        borderWidth: 1,
+        borderColor: '#8d83e0'
     },
     userName: {
         fontSize: 22,
@@ -45,20 +51,22 @@ const styles = StyleSheet.create({
     },
     timeContainer:{
         position: 'absolute',
-        marginTop: '2%',
+        marginTop: '3%',
         marginLeft: '85%'
     },
     time: {
         fontSize: 12,
-        color: 'white',
+        color: 'rgba(225,225,255,0.7)',
     },
     message: {
         color: 'white',
+        marginTop: 6,
     },
     bar: {
         alignSelf: 'center',
         height: 1,
-        width: '96%',
+        marginTop: 11,
+        width: '100%',
         backgroundColor: 'gray',
         // marginLeft: '-100%',
         // marginTop: 50,
