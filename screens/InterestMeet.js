@@ -474,8 +474,8 @@ const styles = StyleSheet.create({
     flexWrap: 'wrap',
   },
   welcometext: {
-    fontSize: 20,
-    marginTop: -16,
+    fontSize: 16,
+    marginTop: -6,
     fontWeight: '100',
     color: 'white',
     textTransform: 'uppercase'
