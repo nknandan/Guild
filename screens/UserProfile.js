@@ -23,12 +23,24 @@ const UserProfile = ({navigation}) => {
 
   const [userName, setUserName] = useState("");
 
-  firestore().collection("Users").doc(auth().currentUser.uid).get().then(userSnapshot => {
-    let userData = userSnapshot.data();
-    setUserName(userData.Name)
-  }).catch(e => {
-    console.log(e);
-  })
+  const[friends, setFriends] = useState([]);
+
+
+  useEffect(()=>{
+    firestore().collection("Users").doc(auth().currentUser.uid).get().then(userSnapshot => {
+      let userData = userSnapshot.data();
+      let friendIds = Object.keys(userData.Friends);
+      friendIds.forEach(friendId => {
+        firestore().collection("Users").doc('' + friendId).get().then(friendSnapshot => {
+          let friendData = friendSnapshot.data();
+          setFriends(oldFriendsList => [...oldFriendsList, friendData]);
+        });
+      })
+      setUserName(userData.Name)
+    }).catch(e => {
+      console.log(e);
+    })
+  }, []);
 
   return(
     <View>
@@ -58,21 +70,9 @@ const UserProfile = ({navigation}) => {
             <View style={styles.maincontainer1}>
               <Text style={styles.welcometext1}>Your Friends</Text>
               <ScrollView style={styles.scrollViewS}>
-                <FriendBar/>
-                <FriendBar/>
-                <FriendBar/>
-                <FriendBar/>
-                <FriendBar/>
-                <FriendBar/>
-                <FriendBar/>
-                <FriendBar/>
-                <FriendBar/>
-                <FriendBar/>
-                <FriendBar/>
-                <FriendBar/>
-                <FriendBar/>
-                <FriendBar/>
-                <FriendBar/>
+                {friends.map((friend, key) => {
+                  return (<FriendBar key={key} friendName={'' + friend.Name} friendObj={friend}/>)
+                })}
               </ScrollView>              
             </View>
            </View>

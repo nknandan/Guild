@@ -17,9 +17,13 @@ import { Composer, InputToolbar, Time, Bubble, GiftedChat } from 'react-native-g
 import auth from '@react-native-firebase/auth';
 import firestore from '@react-native-firebase/firestore';
 
+import AsyncStorage from '@react-native-async-storage/async-storage';
+
 const InterestMeet = ({navigation, route}) => {
   
   const [messages, setMessages] = useState([]);
+
+  const [friendAdded, setFriendAdded] = useState(false);
 
   const [roomId, setRoomId] = useState("");
 
@@ -38,13 +42,11 @@ const InterestMeet = ({navigation, route}) => {
   Initialize();
 
   useEffect(() => {
-    console.log("use Effect");
-    console.log(`RoomId ${roomId}`);
-  }, []);
+    console.log('Messages Added');
+  }, messages);
 
   function Initialize(){
-    console.log("hi");
-    console.log(`STRAT ROOM ${JSON.stringify(roomId)}`);
+    console.log(`Start Roomn ${JSON.stringify(roomId)}`);
     if(roomId !== ""){
       return;
     }
@@ -193,8 +195,18 @@ const InterestMeet = ({navigation, route}) => {
                       [`Friends.${connectedUserId}`]: roomUid
                     }).then(() => {
                       //Added Friend
+
                       setAddf(['Friend Added','check-circle','white']);
+
                       clearFriendRequests();
+
+                      AsyncStorage.setItem(roomUid, messages).then(() => {
+                        console.log("Saved Messages to Local Storage");
+                        setFriendAdded(true);
+                      }).catch(e => {
+                        console.log(e);
+                      });
+                      
                     }).catch(e => {
                       console.log(e);
                       clearFriendRequests();

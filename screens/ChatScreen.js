@@ -19,6 +19,10 @@ import firestore from '@react-native-firebase/firestore';
 
 const ChatScreen = ({navigation, route}) => {
 
+  const {friend} = route.params;
+
+  console.log(JSON.stringify(friend));
+
 //   const [messages, setMessages] = useState([]);
 
 //   const [roomId, setRoomId] = useState("");
@@ -251,7 +255,7 @@ const ChatScreen = ({navigation, route}) => {
         </View>
         <LinearGradient colors={['#9E97D4', '#ffbe8f']} start={{ x: 0, y: 0 }} end={{ x: 1, y: 0}} style={styles.empty1}></LinearGradient>
         <View style={styles.maincontainer}>
-          <Text style={styles.welcometext}>//Friend Name// </Text>
+          <Text style={styles.welcometext}>{friend.Name} </Text>
         </View>
         
       {/* <GiftedChat 
