@@ -33,7 +33,8 @@ const styles = StyleSheet.create({
         fontSize: 22,
         color: '#8d83e0',
         marginRight: 200,
-        fontWeight: 'bold'
+        fontWeight: 'bold',
+        paddingLeft: 4,
     },
     messageContainer:{
         marginTop: -4,
