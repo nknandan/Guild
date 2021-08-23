@@ -39,11 +39,14 @@ const InterestMeet = ({navigation, route}) => {
 
   let userExited = false;
 
-  Initialize();
-
   useEffect(() => {
     console.log('Messages Added');
-  }, messages);
+  }, [messages]);
+
+  useEffect(()=>{
+    //Initialize
+    Initialize();
+  }, []);
 
   function Initialize(){
     console.log(`Start Roomn ${JSON.stringify(roomId)}`);
@@ -99,7 +102,6 @@ const InterestMeet = ({navigation, route}) => {
     console.log(`Room UID: ${roomUid}`);
 
     RoomsCollection.doc(roomUid).onSnapshot(documentSnapshot => {
-      console.log(documentSnapshot);
       let updatedData = documentSnapshot.data();
       if(!updatedData){
         //User Disconnected
@@ -167,11 +169,13 @@ const InterestMeet = ({navigation, route}) => {
           }
         )
       }
+    }); 
 
+    console.log("Checking for Friend Request");
       //Check for FriendRequest
-      UsersCollection.doc(auth().currentUser.uid).onSnapshot(snapshot => {
+      UsersCollection.doc('' + auth().currentUser.uid).onSnapshot(snapshot => {
         let userData = snapshot.data();
-        console.log(JSON.stringify(userData));
+        console.log(`UserSnapshot ${JSON.stringify(userData)}`);
 
         if(userData.FriendRequests && userData.FriendRequests.length > 0){
           //Got Friend Request
@@ -228,14 +232,7 @@ const InterestMeet = ({navigation, route}) => {
         }else{
 
         }
-      })
-    }); 
-
-    function clearFriendRequests(){
-      UsersCollection.doc(auth().currentUser.uid).update({"FriendRequests": firestore.FieldValue.delete()}).then(() => {
-        console.log('Friend Request Handled');
       });
-    }
 
     const backAction = () => {
       Alert.alert("Hold on!", "Are you sure you want to exit this room?", [
@@ -260,6 +257,12 @@ const InterestMeet = ({navigation, route}) => {
       "hardwareBackPress",
       backAction
     );
+  }
+
+  function clearFriendRequests(){
+    UsersCollection.doc(auth().currentUser.uid).update({"FriendRequests": firestore.FieldValue.delete()}).then(() => {
+      console.log('Friend Request Handled');
+    });
   }
 
   function onMessageReceive(newMessage = []) {
@@ -340,7 +343,7 @@ const InterestMeet = ({navigation, route}) => {
       FriendRequests: firestore.FieldValue.arrayUnion(auth().currentUser.uid)
     }).then(() => {
       //Added Friend
-      setAddf(['Friend Request Sent','check-circle','white']);
+      setAddf(['Requested','hourglass','white']);
     }).catch(e => {
       console.log(e);
     })
