@@ -17,7 +17,7 @@ import auth from '@react-native-firebase/auth';
 import firestore from '@react-native-firebase/firestore';
 
 const InterestMeet = ({navigation, route}) => {
-
+  
   const [messages, setMessages] = useState([]);
 
   const [roomId, setRoomId] = useState("");
@@ -342,10 +342,20 @@ const InterestMeet = ({navigation, route}) => {
         </View>
         <LinearGradient colors={['#9E97D4', '#ffbe8f']} start={{ x: 0, y: 0 }} end={{ x: 1, y: 0}} style={styles.empty1}></LinearGradient>
         <View style={styles.maincontainer}>
-          <Text style={styles.welcometext}>You are connected on </Text>
+          <Text style={styles.welcometext}>You are connected on</Text>
+          <Text style={styles.welcometext69}>{route.params.roomName}</Text>
         </View>
         
-      <GiftedChat 
+
+        { otherUserId ? <View>
+          <Text>User Connected</Text>
+        </View> : 
+              <View>
+                <Text>waiting for other user to connect.</Text>
+              </View>
+        }
+
+      {/* <GiftedChat 
         messages={messages}
         onSend={newMessage => onMessageSent(newMessage)}
         user={{
@@ -366,7 +376,7 @@ const InterestMeet = ({navigation, route}) => {
           </View>
           <Text style={{color: addf[2], fontSize: 20, fontWeight: 'bold'}}>{addf[0]}</Text>
         </LinearGradient>
-        </TouchableOpacity>
+        </TouchableOpacity> */}
       </LinearGradient>
     </View>
   );
@@ -460,7 +470,14 @@ const styles = StyleSheet.create({
     flexWrap: 'wrap',
   },
   welcometext: {
-    fontSize: 22,
+    fontSize: 20,
+    marginTop: -16,
+    fontWeight: '100',
+    color: 'white',
+    textTransform: 'uppercase'
+  },
+  welcometext69: {
+    fontSize: 26,
     fontWeight: '100',
     color: '#ffbe8f',
     textTransform: 'uppercase'
