@@ -295,6 +295,9 @@ const InterestMeet = ({navigation, route}) => {
             color: '#000',
           },
         }}
+        usernameStyle={{
+          color: 'rgba(0,0,0,0.6)',
+        }}
       />
     );
   };
@@ -305,10 +308,10 @@ const InterestMeet = ({navigation, route}) => {
       {...props}
         timeTextStyle={{
           left: {
-            color: 'black',
+            color: 'rgba(0,0,0,0.6)',
           },
           right: {
-            color: 'black',
+            color: 'rgba(0,0,0,0.6)',
           },
         }}
       />
@@ -359,27 +362,6 @@ const InterestMeet = ({navigation, route}) => {
           <Text style={styles.welcometext}>You are connected on</Text>
           <Text style={styles.welcometext69}>{route.params.roomName}</Text>
         </View>
-          {/* <GiftedChat 
-              messages={messages}
-              onSend={newMessage => onMessageSent(newMessage)}
-              user={{
-              _id: auth().currentUser.uid}}
-              renderTime={renderTime}
-              renderBubble={renderBubble}
-              renderUsernameOnMessage={true}
-              renderInputToolbar={props => customtInputToolbar(props)}
-              renderComposer={(props) => <Composer textInputStyle={{color: 'white'}} {...props} />}
-              />
-              <TouchableOpacity style={styles.addFriend} onPress={() => {
-                addFriend();
-                }}>          
-                <LinearGradient colors={['#8d83e0', '#9E97D4']} start={{ x: 0, y: 0 }} end={{ x: 1, y: 0}} style={styles.newc3}>
-                  <View style={styles.addfriendIcon}> 
-                    <FontAwesome name={addf[1]} size={25} color={'#ffbe8f'}/>
-                  </View>
-                  <Text style={{color: addf[2], fontSize: 20, fontWeight: 'bold'}}>{addf[0]}</Text>
-                </LinearGradient>
-              </TouchableOpacity> */}
           { otherUserId ? 
             <View style={styles.chatContainer}>
               <GiftedChat 
@@ -427,10 +409,7 @@ const styles = StyleSheet.create({
     flex: 1,
   },
   chatContainer: {
-    // backgroundColor: 'white',
-    // height: 614,
-    // width: windowWidth,
-    // marginLeft: -20,
+
     flex: 1,
   },
   newc3: {
@@ -491,14 +470,10 @@ const styles = StyleSheet.create({
   maincontainer: {
     padding: 20,
   },
-  maincontainer1: {
-    // padding: 15,
-  },
   maincontainer2: {
     padding: 15,
     paddingLeft: 0,
     height: 540,
-    // backgroundColor: 'white',
     flexWrap: 'wrap',
   },
   scroll: {
@@ -508,7 +483,6 @@ const styles = StyleSheet.create({
   },
   maincontainer3: {
     height: 790,
-    // backgroundColor: 'white',
     flexWrap: 'wrap',
   },
   welcometext: {
@@ -544,7 +518,6 @@ const styles = StyleSheet.create({
   userNotConnectedRoomLogo: {
     height: windowHeight/15,
     flexDirection: 'row',
-    // marginLeft: -25,
   },
   welcometext1: {
     fontSize: 22,

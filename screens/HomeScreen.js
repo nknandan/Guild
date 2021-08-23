@@ -30,7 +30,7 @@ const HomeScreen = ({navigation}) => {
            <View style={styles.navbar}>
             <Logoanimation/>
             <Image source={require('../assets/logo_name.png')} style={styles.logon}/>
-            <TouchableOpacity style={styles.usercon}>
+            {/* <TouchableOpacity style={styles.usercon}>
               <Icon.Button
                 name="envelope"
                 backgroundColor="#2d2d2d"
@@ -39,7 +39,7 @@ const HomeScreen = ({navigation}) => {
                 style={styles.user}
                 onPress={() => navigation.navigate('MessagesScreen')}
               />
-            </TouchableOpacity>
+            </TouchableOpacity> */}
 
            </View>
            <LinearGradient colors={['#9E97D4', '#ffbe8f']} start={{ x: 0, y: 0 }} end={{ x: 1, y: 0}} style={styles.empty1}></LinearGradient>

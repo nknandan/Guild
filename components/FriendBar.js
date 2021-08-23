@@ -29,7 +29,7 @@ const styles = StyleSheet.create({
         alignItems: 'center'
     },
     containerButton: {
-        // width: '100%',
+        width: '84%',
         flexDirection: 'row',
         alignItems: 'center',
     },

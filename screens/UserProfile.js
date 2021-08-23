@@ -11,10 +11,8 @@ import { AuthContext } from '../navigation/AuthProvider';
 import { windowHeight, windowWidth } from '../utils/Dimentions';
 import LinearGradient from 'react-native-linear-gradient';
 import FontAwesome from 'react-native-vector-icons/FontAwesome';
-import Icon from 'react-native-vector-icons/FontAwesome';
 import Logoanimation from '../components/LogoAnimation';
 import FriendBar from '../components/FriendBar';
-
 import auth from '@react-native-firebase/auth';
 import firestore from '@react-native-firebase/firestore';
 
@@ -52,7 +50,7 @@ const UserProfile = ({navigation}) => {
             <Logoanimation/>
             {/* <Image source={require('../assets/logo_circle.png')} style={styles.logoc}/> */}
             <Image source={require('../assets/logo_name.png')} style={styles.logon}/>
-            <TouchableOpacity style={styles.usercon}>
+            {/* <TouchableOpacity style={styles.usercon}>
               <Icon.Button
                 name="envelope"
                 backgroundColor="#2d2d2d"
@@ -61,7 +59,7 @@ const UserProfile = ({navigation}) => {
                 style={styles.user}
                 onPress={() => navigation.navigate('MessagesScreen')}
               />
-            </TouchableOpacity>
+            </TouchableOpacity> */}
            </View>
            <LinearGradient colors={['#9E97D4', '#ffbe8f']} start={{ x: 0, y: 0 }} end={{ x: 1, y: 0}} style={styles.empty1}></LinearGradient>
            <View style={styles.maincontainer}>
@@ -160,7 +158,7 @@ const styles = StyleSheet.create({
     },
     logoutButton: {
       position: 'absolute',
-      marginTop: 73,
+      marginTop: 71,
       marginLeft: windowWidth-36,
     },
     scrollViewS: {
