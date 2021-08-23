@@ -71,7 +71,7 @@ const UserProfile = ({navigation}) => {
               <Text style={styles.welcometext1}>Your Friends</Text>
               <ScrollView style={styles.scrollViewS}>
                 {friends.map((friend, key) => {
-                  return (<FriendBar key={key} friendName={'' + friend.Name}/>)
+                  return (<FriendBar key={key} friendName={'' + friend.Name} friendObj={friend}/>)
                 })}
               </ScrollView>              
             </View>
