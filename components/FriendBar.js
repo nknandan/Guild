@@ -1,18 +1,18 @@
 import React from 'react';
-import { View, Text, Button, TextInput, TouchableOpacity, StyleSheet } from 'react-native';
-import { windowWidth, windowHeight } from '../utils/Dimentions';
-import AntDesign from 'react-native-vector-icons/AntDesign';
+import { View, Text, TouchableOpacity, StyleSheet } from 'react-native';
 import FontAwesome from 'react-native-vector-icons/FontAwesome';
 
 
-const FriendBar = ({labelValue, placeholderText, iconType, error, ...rest}) => {
+const FriendBar = ({friendName, ...rest}) => {
     return(
         <View style={styles.container}>
-            <Text style={styles.userName}>John Doe</Text>
-            <FontAwesome name={'comment'} size={25} color={'#ffbe8f'}/>
-            <View style={styles.bar}>
-                <Text>Hi</Text>
-            </View>
+            <TouchableOpacity style={styles.containerButton}>
+                <Text style={styles.userName}>John Doe</Text>
+            </TouchableOpacity>    
+            <TouchableOpacity>
+                <FontAwesome name={'comment'} size={25} color={'#ffbe8f'}/>
+            </TouchableOpacity>                                    
+            <View style={styles.bar}></View>
         </View>
     );
 };
@@ -25,6 +25,11 @@ const styles = StyleSheet.create({
         flexDirection: 'row',
         alignItems: 'center'
     },
+    containerButton: {
+        // width: '100%',
+        flexDirection: 'row',
+        alignItems: 'center',
+    },
     userName: {
         fontSize: 20,
         color: '#8d83e0',
@@ -36,6 +41,6 @@ const styles = StyleSheet.create({
         width: '108%',
         backgroundColor: 'gray',
         marginLeft: '-106%',
-        marginTop: 60,
+        marginTop: 50,
     }
   });

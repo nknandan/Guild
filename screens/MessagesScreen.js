@@ -1,23 +1,15 @@
-import React, {useContext, useEffect, useState, Component} from 'react';
+import React from 'react';
 import {
   View,
-  ScrollView,
   Text,
   StyleSheet,
-  FlatList,
-  SafeAreaView,
-  Alert,
   Image,
-  TouchableOpacity,
-  Animated,
+  ScrollView,
 } from 'react-native';
-import { AuthContext } from '../navigation/AuthProvider';
 import { windowHeight } from '../utils/Dimentions';
 import LinearGradient from 'react-native-linear-gradient';
-import FontAwesome from 'react-native-vector-icons/FontAwesome';
-import Icon from 'react-native-vector-icons/FontAwesome';
-import InterestBar from '../components/InterestBar';
 import Logoanimation from '../components/LogoAnimation';
+import MessageComponent from '../components/MessageComponent';
 
 const MessagesScreen = ({navigation}) => {
 
@@ -31,6 +23,26 @@ const MessagesScreen = ({navigation}) => {
             <LinearGradient colors={['#9E97D4', '#ffbe8f']} start={{ x: 0, y: 0 }} end={{ x: 1, y: 0}} style={styles.empty1}></LinearGradient>
             <View style={styles.maincontainer}>
                 <Text style={styles.welcometext}>Messages</Text>
+                <LinearGradient colors={['#9E97D4', '#ffbe8f']} start={{ x: 0, y: 0 }} end={{ x: 0, y: 1}} style={styles.empty2}></LinearGradient>
+                <View style={styles.maincontainer1}>
+                  <ScrollView style={styles.scrollViewS}>
+                    <MessageComponent/>
+                    <MessageComponent/>
+                    <MessageComponent/>
+                    <MessageComponent/>
+                    <MessageComponent/>
+                    <MessageComponent/>
+                    <MessageComponent/>
+                    <MessageComponent/>
+                    <MessageComponent/>
+                    <MessageComponent/>
+                    <MessageComponent/>
+                    <MessageComponent/>
+                    <MessageComponent/>
+                    <MessageComponent/>
+                    <MessageComponent/>
+                  </ScrollView>              
+                </View>
             </View>
         </LinearGradient>
         
@@ -62,6 +74,11 @@ const styles = StyleSheet.create({
     width: 90,
     marginTop: -34,
     marginLeft: -50,
+  },
+  scrollViewS: {
+    paddingTop: 12,
+    height: 555,
+    width: '100%'
   },
   empty1: {
     height: 2,

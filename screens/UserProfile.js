@@ -1,15 +1,11 @@
-import React, {useContext, useEffect, useState, Component} from 'react';
+import React, {useContext} from 'react';
 import {
   View,
   ScrollView,
   Text,
   StyleSheet,
-  FlatList,
-  SafeAreaView,
-  Alert,
   Image,
   TouchableOpacity,
-  Animated,
 } from 'react-native';
 import { AuthContext } from '../navigation/AuthProvider';
 import { windowHeight, windowWidth } from '../utils/Dimentions';
@@ -17,7 +13,6 @@ import LinearGradient from 'react-native-linear-gradient';
 import FontAwesome from 'react-native-vector-icons/FontAwesome';
 import Icon from 'react-native-vector-icons/FontAwesome';
 import Logoanimation from '../components/LogoAnimation';
-import FormButton from '../components/FormButton';
 import FriendBar from '../components/FriendBar';
 
 const UserProfile = ({navigation}) => {

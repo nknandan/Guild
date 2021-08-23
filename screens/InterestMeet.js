@@ -1,29 +1,20 @@
-import React, {useContext, useEffect, useState, useCallback, KeyboardAvoidingView, Component} from 'react';
-import { useFocusEffect } from '@react-navigation/native';
+import React, {useEffect, useState} from 'react';
 import {
   View,
-  ScrollView,
   Text,
   StyleSheet,
-  FlatList,
-  SafeAreaView,
   Alert,
   Image,
   TouchableOpacity,
-  Animated,
   BackHandler
 } from 'react-native';
-import { AuthContext } from '../navigation/AuthProvider';
 import { windowHeight, windowWidth } from '../utils/Dimentions';
 import LinearGradient from 'react-native-linear-gradient';
 import FontAwesome from 'react-native-vector-icons/FontAwesome';
-import Icon from 'react-native-vector-icons/FontAwesome';
-import InterestBar from '../components/InterestBar';
 import Logoanimation from '../components/LogoAnimation';
 import { Composer, InputToolbar, Time, Bubble, GiftedChat } from 'react-native-gifted-chat'
 import auth from '@react-native-firebase/auth';
 import firestore from '@react-native-firebase/firestore';
-import Modal from 'react-native-modalbox'
 
 const InterestMeet = ({navigation, route}) => {
 
