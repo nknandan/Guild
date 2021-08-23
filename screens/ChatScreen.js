@@ -12,6 +12,7 @@ import { windowHeight, windowWidth } from '../utils/Dimentions';
 import LinearGradient from 'react-native-linear-gradient';
 import FontAwesome from 'react-native-vector-icons/FontAwesome';
 import Logoanimation from '../components/LogoAnimation';
+import Logoanimation1 from '../components/LogoAnimation1';
 import { Composer, InputToolbar, Time, Bubble, GiftedChat } from 'react-native-gifted-chat'
 import auth from '@react-native-firebase/auth';
 import firestore from '@react-native-firebase/firestore';

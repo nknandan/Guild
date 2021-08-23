@@ -12,6 +12,7 @@ import { windowHeight, windowWidth } from '../utils/Dimentions';
 import LinearGradient from 'react-native-linear-gradient';
 import FontAwesome from 'react-native-vector-icons/FontAwesome';
 import Logoanimation from '../components/LogoAnimation';
+import Logoanimation1 from '../components/LogoAnimation1';
 import { Composer, InputToolbar, Time, Bubble, GiftedChat } from 'react-native-gifted-chat'
 import auth from '@react-native-firebase/auth';
 import firestore from '@react-native-firebase/firestore';
@@ -348,36 +349,38 @@ const InterestMeet = ({navigation, route}) => {
         </View>
         
 
-        { otherUserId ? <View>
-          <Text>User Connected</Text>
-        </View> : 
-              <View>
-                <Text>waiting for other user to connect.</Text>
+        { otherUserId ? 
+        <View style={styles.maincontainer}>
+          <GiftedChat 
+          messages={messages}
+          onSend={newMessage => onMessageSent(newMessage)}
+          user={{
+          _id: auth().currentUser.uid}}
+          renderTime={renderTime}
+          renderBubble={renderBubble}
+          renderUsernameOnMessage={true}
+          renderInputToolbar={props => customtInputToolbar(props)}
+          renderComposer={(props) => <Composer textInputStyle={{color: 'white'}} {...props} />}
+          />
+          <TouchableOpacity style={styles.addFriend} onPress={() => {
+            addFriend();
+            }}>          
+            <LinearGradient colors={['#8d83e0', '#9E97D4']} start={{ x: 0, y: 0 }} end={{ x: 1, y: 0}} style={styles.newc3}>
+              <View style={styles.addfriendIcon}> 
+                <FontAwesome name={addf[1]} size={25} color={'#ffbe8f'}/>
               </View>
+              <Text style={{color: addf[2], fontSize: 20, fontWeight: 'bold'}}>{addf[0]}</Text>
+            </LinearGradient>
+          </TouchableOpacity>
+        </View>
+        : 
+        <View style={styles.userNotConnectedRoom}>
+          <View style={styles.userNotConnectedRoomLogo}>
+            <Logoanimation1/>
+          </View>     
+          <Text style={styles.userNotConnectedRoomText}>Connecting</Text>   
+        </View>
         }
-
-      {/* <GiftedChat 
-        messages={messages}
-        onSend={newMessage => onMessageSent(newMessage)}
-        user={{
-        _id: auth().currentUser.uid}}
-        renderTime={renderTime}
-        renderBubble={renderBubble}
-        renderUsernameOnMessage={true}
-        renderInputToolbar={props => customtInputToolbar(props)}
-        renderComposer={(props) => <Composer textInputStyle={{color: 'white'}} {...props} />}
-        // renderAvatar={nul}
-      />
-      <TouchableOpacity style={styles.addFriend} onPress={() => {
-        addFriend();
-        }}>          
-        <LinearGradient colors={['#8d83e0', '#9E97D4']} start={{ x: 0, y: 0 }} end={{ x: 1, y: 0}} style={styles.newc3}>
-          <View style={styles.addfriendIcon}> 
-            <FontAwesome name={addf[1]} size={25} color={'#ffbe8f'}/>
-          </View>
-          <Text style={{color: addf[2], fontSize: 20, fontWeight: 'bold'}}>{addf[0]}</Text>
-        </LinearGradient>
-        </TouchableOpacity> */}
       </LinearGradient>
     </View>
   );
@@ -482,6 +485,28 @@ const styles = StyleSheet.create({
     fontWeight: '100',
     color: '#ffbe8f',
     textTransform: 'uppercase'
+  },
+  userNotConnectedRoom: {
+    alignSelf: 'center',
+    alignItems: 'center',
+    width: 200,
+    height: 200,
+    marginTop: 150,
+    flexDirection: 'row',
+    marginLeft: 220,
+  },
+  userNotConnectedRoomText: {
+    fontSize: 20,
+    marginTop: 0,
+    marginLeft: -220,
+    fontWeight: '100',
+    color: 'white',
+    textTransform: 'uppercase'    
+  },
+  userNotConnectedRoomLogo: {
+    height: windowHeight/15,
+    flexDirection: 'row',
+    // marginLeft: -25,
   },
   welcometext1: {
     fontSize: 22,
