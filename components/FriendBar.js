@@ -10,7 +10,7 @@ const FriendBar = ({friendName, ...rest}) => {
     return(
         <View style={styles.container}>
             <View style={styles.containerButton}>
-                <Text style={styles.userName}>John Doe</Text>
+                <Text style={styles.userName}>{friendName}</Text>
             </View>    
             <TouchableOpacity style={styles.chatIcon} onPress={() => {navigation.navigate('ChatScreen')}}>
                 <FontAwesome name={'comments'} size={25} color={'#ffbe8f'}/>
