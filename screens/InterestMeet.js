@@ -347,40 +347,59 @@ const InterestMeet = ({navigation, route}) => {
           <Text style={styles.welcometext}>You are connected on</Text>
           <Text style={styles.welcometext69}>{route.params.roomName}</Text>
         </View>
-        
-
-        { otherUserId ? 
-        <View style={styles.maincontainer}>
-          <GiftedChat 
-          messages={messages}
-          onSend={newMessage => onMessageSent(newMessage)}
-          user={{
-          _id: auth().currentUser.uid}}
-          renderTime={renderTime}
-          renderBubble={renderBubble}
-          renderUsernameOnMessage={true}
-          renderInputToolbar={props => customtInputToolbar(props)}
-          renderComposer={(props) => <Composer textInputStyle={{color: 'white'}} {...props} />}
-          />
-          <TouchableOpacity style={styles.addFriend} onPress={() => {
-            addFriend();
-            }}>          
-            <LinearGradient colors={['#8d83e0', '#9E97D4']} start={{ x: 0, y: 0 }} end={{ x: 1, y: 0}} style={styles.newc3}>
-              <View style={styles.addfriendIcon}> 
-                <FontAwesome name={addf[1]} size={25} color={'#ffbe8f'}/>
-              </View>
-              <Text style={{color: addf[2], fontSize: 20, fontWeight: 'bold'}}>{addf[0]}</Text>
-            </LinearGradient>
-          </TouchableOpacity>
-        </View>
-        : 
-        <View style={styles.userNotConnectedRoom}>
-          <View style={styles.userNotConnectedRoomLogo}>
-            <Logoanimation1/>
-          </View>     
-          <Text style={styles.userNotConnectedRoomText}>Connecting</Text>   
-        </View>
-        }
+          {/* <GiftedChat 
+              messages={messages}
+              onSend={newMessage => onMessageSent(newMessage)}
+              user={{
+              _id: auth().currentUser.uid}}
+              renderTime={renderTime}
+              renderBubble={renderBubble}
+              renderUsernameOnMessage={true}
+              renderInputToolbar={props => customtInputToolbar(props)}
+              renderComposer={(props) => <Composer textInputStyle={{color: 'white'}} {...props} />}
+              />
+              <TouchableOpacity style={styles.addFriend} onPress={() => {
+                addFriend();
+                }}>          
+                <LinearGradient colors={['#8d83e0', '#9E97D4']} start={{ x: 0, y: 0 }} end={{ x: 1, y: 0}} style={styles.newc3}>
+                  <View style={styles.addfriendIcon}> 
+                    <FontAwesome name={addf[1]} size={25} color={'#ffbe8f'}/>
+                  </View>
+                  <Text style={{color: addf[2], fontSize: 20, fontWeight: 'bold'}}>{addf[0]}</Text>
+                </LinearGradient>
+              </TouchableOpacity> */}
+          { otherUserId ? 
+            <View style={styles.chatContainer}>
+              <GiftedChat 
+                messages={messages}
+                onSend={newMessage => onMessageSent(newMessage)}
+                user={{
+                _id: auth().currentUser.uid}}
+                renderTime={renderTime}
+                renderBubble={renderBubble}
+                renderUsernameOnMessage={true}
+                renderInputToolbar={props => customtInputToolbar(props)}
+                renderComposer={(props) => <Composer textInputStyle={{color: 'white'}} {...props} />}
+              />
+              <TouchableOpacity style={styles.addFriend} onPress={() => {
+                addFriend();
+                }}>          
+                <LinearGradient colors={['#8d83e0', '#9E97D4']} start={{ x: 0, y: 0 }} end={{ x: 1, y: 0}} style={styles.newc3}>
+                  <View style={styles.addfriendIcon}> 
+                    <FontAwesome name={addf[1]} size={25} color={'#ffbe8f'}/>
+                  </View>
+                  <Text style={{color: addf[2], fontSize: 20, fontWeight: 'bold'}}>{addf[0]}</Text>
+                </LinearGradient>
+              </TouchableOpacity>
+            </View>
+            : 
+            <View style={styles.userNotConnectedRoom}>
+              <View style={styles.userNotConnectedRoomLogo}>
+                <Logoanimation1/>
+              </View>     
+              <Text style={styles.userNotConnectedRoomText}>Connecting</Text>   
+            </View>
+          }
       </LinearGradient>
     </View>
   );
@@ -393,6 +412,13 @@ const styles = StyleSheet.create({
     flex: 1,
   },
   newc2: {
+    flex: 1,
+  },
+  chatContainer: {
+    // backgroundColor: 'white',
+    // height: 614,
+    // width: windowWidth,
+    // marginLeft: -20,
     flex: 1,
   },
   newc3: {
@@ -421,7 +447,7 @@ const styles = StyleSheet.create({
     position: 'absolute',
     backgroundColor: '#8d83e0',
     marginLeft: windowWidth-160,
-    marginTop: 116,
+    marginTop: -16,
     flexDirection: 'row',
     alignItems: 'center',
     borderTopLeftRadius: 20,
@@ -454,7 +480,7 @@ const styles = StyleSheet.create({
     padding: 20,
   },
   maincontainer1: {
-    padding: 15,
+    // padding: 15,
   },
   maincontainer2: {
     padding: 15,
