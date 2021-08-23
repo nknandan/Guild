@@ -163,8 +163,65 @@ const InterestMeet = ({navigation, route}) => {
           }
         )
       }
-      console.log('Room data: ', documentSnapshot.data());
+
+      //Check for FriendRequest
+      UsersCollection.doc(auth().currentUser.uid).onSnapshot(snapshot => {
+        let userData = snapshot.data();
+        console.log(JSON.stringify(userData));
+
+        if(userData.FriendRequests && userData.FriendRequests.length > 0){
+          //Got Friend Request
+
+          console.log("Got Friend Request");
+
+          UsersCollection.doc(connectedUserId).get().then(friendSnapshot => {
+            console.log(`FriendSnapshot ${JSON.stringify(friendSnapshot.data())}`);
+            let friendData = friendSnapshot.data();
+            let friendName = friendData.Name;
+
+            Alert.alert("Friend Request", `${friendName} Sent You a Friend Request`, [
+              {
+                text: "Accept",
+                onPress: () => {
+                  //Friend Request Accepted
+                  UsersCollection.doc(connectedUserId).update({
+                    [`Friends.${auth().currentUser.uid}`]: roomUid
+                  }).then(() => {
+                    UsersCollection.doc(auth().currentUser.uid).update({
+                      [`Friends.${connectedUserId}`]: roomUid
+                    }).then(() => {
+                      //Added Friend
+                      setAddf(['Friend Added','check-circle','white']);
+                      clearFriendRequests();
+                    }).catch(e => {
+                      console.log(e);
+                      clearFriendRequests();
+                    });
+                  }).catch(e => {
+                    console.log(e);
+                    clearFriendRequests();
+                  })
+                },
+              },
+              { text: "Cancel", onPress: () => {
+                clearFriendRequests();
+              }}
+            ]);
+            
+          }).catch(e => {
+            console.log(e);
+          })
+        }else{
+
+        }
+      })
     }); 
+
+    function clearFriendRequests(){
+      UsersCollection.doc(auth().currentUser.uid).update({"FriendRequests": firestore.FieldValue.delete()}).then(() => {
+        console.log('Friend Request Handled');
+      });
+    }
 
     const backAction = () => {
       Alert.alert("Hold on!", "Are you sure you want to exit this room?", [
@@ -265,11 +322,11 @@ const InterestMeet = ({navigation, route}) => {
 
   function addFriend(){
     console.log(`OtherUserId ${otherUserId}`);
-    UsersCollection.doc(auth().currentUser.uid).update({
-      [`Friends.${otherUserId}`]: roomId
+    UsersCollection.doc(otherUserId).update({
+      FriendRequests: firestore.FieldValue.arrayUnion(auth().currentUser.uid)
     }).then(() => {
       //Added Friend
-      setAddf(['Friend Added','check-circle','white']);
+      setAddf(['Friend Request Sent','check-circle','white']);
     }).catch(e => {
       console.log(e);
     })
