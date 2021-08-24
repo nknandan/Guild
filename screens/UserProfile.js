@@ -146,7 +146,7 @@ const styles = StyleSheet.create({
   welcometext1: {
     fontSize: 18,
     fontWeight: '100',
-    color: '#676767',
+    color: 'black',
     fontFamily: 'Montserrat-Regular',
     marginBottom: 12,
   },

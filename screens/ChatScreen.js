@@ -209,6 +209,8 @@ const ChatScreen = ({navigation, route}) => {
           backgroundColor: "#000000",
           borderTopColor: "#ffffff",
           borderTopWidth: 2,
+          borderBottomWidth: 1,
+          borderBottomColor: '#9100FF',
           padding: 1,
           borderTopLeftRadius: 20, 
           borderTopRightRadius: 20, 
