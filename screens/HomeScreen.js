@@ -25,26 +25,15 @@ const HomeScreen = ({navigation}) => {
 
   return(
     <View>
-      <LinearGradient colors={['#2d2d2d', '#396563']} start={{ x: 0, y: 0.5 }} end={{ x: 0, y: 1}} style={styles.container}>
+      <LinearGradient colors={['#ffffff', '#D6C1E7']} start={{ x: 0, y: 0.5 }} end={{ x: 0, y: 1}} style={styles.container}>
            <View style={styles.navbar}>
             <Logoanimation/>
             <Image source={require('../assets/logo_name.png')} style={styles.logon}/>
-            {/* <TouchableOpacity style={styles.usercon}>
-              <Icon.Button
-                name="envelope"
-                backgroundColor="#2d2d2d"
-                color='#8d83e0'
-                size={30}
-                style={styles.user}
-                onPress={() => navigation.navigate('MessagesScreen')}
-              />
-            </TouchableOpacity> */}
-
            </View>
-           <LinearGradient colors={['#9E97D4', '#ffbe8f']} start={{ x: 0, y: 0 }} end={{ x: 1, y: 0}} style={styles.empty1}></LinearGradient>
+           <LinearGradient colors={['#9E97D4', '#24182E']} start={{ x: 0, y: 0 }} end={{ x: 1, y: 0}} style={styles.empty1}></LinearGradient>
            <View style={styles.maincontainer}>
            <Text style={styles.welcometext}>Find Your Type Of People</Text>
-           <LinearGradient colors={['#9E97D4', '#ffbe8f']} start={{ x: 0, y: 0 }} end={{ x: 0, y: 1}} style={styles.empty2}></LinearGradient>
+           <LinearGradient colors={['#9E97D4', '#24182E']} start={{ x: 0, y: 0 }} end={{ x: 0, y: 1}} style={styles.empty2}></LinearGradient>
               <View style={styles.maincontainer1}>
                 <Text style={styles.welcometext1}>Interests you might like</Text>
                 <View style={styles.maincontainer2}>
@@ -52,8 +41,7 @@ const HomeScreen = ({navigation}) => {
                     <View style={styles.maincontainer3}>
                       {interestBarArray}
                     </View>
-                  </ScrollView>
-                  
+                  </ScrollView>                  
                 </View>
               </View>
            </View>
@@ -72,7 +60,7 @@ const styles = StyleSheet.create({
   },
   navbar: {
     height: windowHeight/15,
-    backgroundColor: '#2d2d2d',
+    backgroundColor: '#ffffff',
     flexDirection: 'row',
     marginLeft: -25,
   },
@@ -115,20 +103,22 @@ const styles = StyleSheet.create({
     width: '110%',
   },
   maincontainer3: {
-    height: 790,
+    height: 1108,
     // backgroundColor: 'white',
     flexWrap: 'wrap',
   },
   welcometext: {
-    fontSize: 22,
+    fontSize: 20,
     fontWeight: '100',
-    color: '#ffbe8f',
-    textTransform: 'uppercase'
+    color: '#000000',
+    textTransform: 'uppercase',
+    fontFamily: 'Montserrat-Regular'
   },
   welcometext1: {
-    fontSize: 22,
+    fontSize: 18,
     fontWeight: '100',
-    color: 'white',
+    color: '#000000',
+    fontFamily: 'Montserrat-Regular'
   },
   empty2: {
     height: windowHeight-200,

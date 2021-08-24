@@ -49,7 +49,7 @@ const LoginScreen = ({navigation}) => {
 
     return (
         <View>
-          <LinearGradient colors={['#2d2d2d', '#543965']} start={{ x: 0, y: 0.3 }} end={{ x: 0, y: 1}} style={styles.container}>
+          <LinearGradient colors={['#ffffff', '#D6C1E7']} start={{ x: 0, y: 0.3 }} end={{ x: 0, y: 1}} style={styles.container}>
             <Image source={require('../assets/logo.png')} style={styles.logo}/>
             <FormInput 
                 labelValue={email}
@@ -85,11 +85,16 @@ const LoginScreen = ({navigation}) => {
               <Text style={styles.errorMsg}>Password must be 8 characters long.</Text>
               </View>
             }
+
+            <TouchableOpacity style={styles.forgotButton} onPress={() => {navigation.navigate(ForgotPassword)}}>
+                <Text style={styles.navButtonText}>Forgot Password?</Text>
+            </TouchableOpacity>
+
             <FormButton
-                buttonTitle="Log In"
+                buttonTitle="Login"
                 onPress={() => {
                     if(blankCheck.validEmail||blankCheck.validPassword == false){
-                      alert("Atleast Enter valid details");
+                      alert("Enter valid details !");
                     }
                     else if(data.validPassword == true){
                       login(email, password)
@@ -99,18 +104,6 @@ const LoginScreen = ({navigation}) => {
                   }
                 }
             />
-
-            <TouchableOpacity style={styles.forgotButton} onPress={() => {navigation.navigate(ForgotPassword)}}>
-                <Text style={styles.navButtonText}>Forgot Password?</Text>
-            </TouchableOpacity>
-
-            {/* <SocialButton
-                buttonTitle="Sign In with Facebook"
-                btnType="facebook"
-                color="#4867aa"
-                backgroundColor="#e6eaf4"
-                onPress={() => fbLogin()}
-            /> */}
             <View style={styles.empty}>
 
             </View>
@@ -123,11 +116,13 @@ const LoginScreen = ({navigation}) => {
             />
 
             <TouchableOpacity
-                style={styles.forgotButton}
+                style={styles.forgotButton1}
                 onPress={() => navigation.navigate('Signup')}>
+                <Text style={styles.navButtonText1}>
+                Don't have an account?</Text> 
                 <Text style={styles.navButtonText}>
-                Don't have an account? Create here
-                </Text>
+                  Create here
+                </Text>              
             </TouchableOpacity>
           </LinearGradient>
         </View>
@@ -137,44 +132,59 @@ const LoginScreen = ({navigation}) => {
 export default LoginScreen;
 
 const styles = StyleSheet.create({
-    container: {
-      justifyContent: 'center',
-      alignItems: 'center',
-      padding: 20,
-      paddingTop: 50,
-      backgroundColor: '#2d2d2d',
-      height: windowHeight,
-    },
-    logo: {
-      height: 150,
-      width: 150,
-      resizeMode: 'cover',
-      marginTop: -0,
-    },
-    text: {
-      fontFamily: 'Kufam-SemiBoldItalic',
-      fontSize: 28,
-      marginBottom: 10,
-      color: '#051d5f',
-    },
-    errorMsg: {
-      color: '#E08384',
-      fontSize: 14,
-    },
-    navButton: {
-      marginTop: 15,
-    },
-    forgotButton: {
-      marginVertical: 35,
-    },
-    navButtonText: {
-      marginTop: -8,
-      fontSize: 18,
-      fontWeight: '500',
-      color: '#ffbe8f',
-      fontFamily: 'Lato-Regular',
-    },
-    empty: {
-      marginBottom: 50,
-    }
-  });
+  container: {
+    justifyContent: 'center',
+    alignItems: 'center',
+    padding: 20,
+    paddingTop: 50,
+    backgroundColor: '#2d2d2d',
+    height: windowHeight,
+  },
+  logo: {
+    height: 150,
+    width: 150,
+    resizeMode: 'cover',
+    marginTop: -0,
+  },
+  text: {
+    fontFamily: 'Kufam-SemiBoldItalic',
+    fontSize: 28,
+    marginBottom: 10,
+    color: '#051d5f',
+  },
+  errorMsg: {
+    color: '#E08384',
+    fontSize: 14,
+  },
+  navButton: {
+    marginTop: 15,
+  },
+  forgotButton: {
+    marginTop: 6,
+    marginLeft: 200,
+  },
+  forgotButton1: {
+    // marginTop: 6,
+    // marginLeft: 200,.
+    alignItems: 'center',
+    marginTop: 20,
+  },
+  navButtonText: {
+    marginTop: -6,
+    fontSize: 18,
+    fontWeight: 'bold',
+    color: '#4B4B4B',
+    fontFamily: 'Lato-Regular',
+  },
+  navButtonText1: {
+    // marginLeft: -140,
+    marginTop: -8,
+    fontSize: 18,
+    // fontWeight: 'bold',
+    color: '#4B4B4B',
+    fontFamily: 'Lato-Regular',
+  },
+  empty: {
+    marginVertical: 60,
+  }
+});

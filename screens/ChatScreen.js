@@ -195,16 +195,24 @@ const ChatScreen = ({navigation, route}) => {
         {...props}
         wrapperStyle={{
           right: {
-            backgroundColor: '#ffbe8f',
+            backgroundColor: '#000000',
+            borderBottomRightRadius: 0,
           },
           left: {
-            backgroundColor: '#8d83e0',
+            backgroundColor: '#ffffff',
+            borderBottomLeftRadius: 0,
           }
         }}
         textStyle={{
-          right: {
-            color: '#000',
+          left: {
+            color: '#000000',
           },
+          right: {
+            color: '#ffffff',
+          },
+        }}
+        usernameStyle={{
+          color: 'rgba(0,0,0,0.6)',
         }}
       />
     );
@@ -216,30 +224,34 @@ const ChatScreen = ({navigation, route}) => {
       {...props}
         timeTextStyle={{
           left: {
-            color: 'black',
+            color: 'rgba(0,0,0,0.6)',
           },
           right: {
-            color: 'black',
+            color: 'rgba(225,225,225,0.6)',
           },
         }}
       />
     );
   };
 
+  const renderDay = (props) => {
+    return <Day {...props} textStyle={{color: '#24182E'}}/>
+  }
+
   const customtInputToolbar = props => {
     return (
       <InputToolbar
         {...props}
         containerStyle={{
-          backgroundColor: "#2d2d2d",
-          borderTopColor: "#9E97D4",
-          borderTopWidth: 1,
+          backgroundColor: "#000000",
+          borderTopColor: "#ffffff",
+          borderTopWidth: 2,
           padding: 1,
           borderTopLeftRadius: 20, 
           borderTopRightRadius: 20, 
         }}
-        placeholder="Enter your message"
-        placeholderTextColor="rgba(255, 190, 143, 0.51)"
+        placeholder="Enter your message..."
+        placeholderTextColor="rgba(188, 122, 255, 0.56)"
 
       />
     );
@@ -248,14 +260,23 @@ const ChatScreen = ({navigation, route}) => {
 
   return(
       <View style= {styles.newc1}>
-      <LinearGradient colors={['#2d2d2d', '#653942']} start={{ x: 0, y: 0.5 }} end={{ x: 0, y: 1}} style={styles.newc2}>
-        <View style={styles.navbar}>
-          <Logoanimation/>
-          <Image source={require('../assets/logo_name.png')} style={styles.logon}/>
-        </View>
-        <LinearGradient colors={['#9E97D4', '#ffbe8f']} start={{ x: 0, y: 0 }} end={{ x: 1, y: 0}} style={styles.empty1}></LinearGradient>
-        <View style={styles.maincontainer}>
+      <LinearGradient colors={['#ffffff', '#D6C1E7']} start={{ x: 0, y: 0.5 }} end={{ x: 0, y: 1}} style={styles.newc2}>
+        <View style={styles.navbar}>    
+          <TouchableOpacity style={styles.iconCOntainer}>
+            <FontAwesome
+                        name="long-arrow-left"
+                        size={25}
+                        backgroundColor="#ffffff"
+                        color="#9100FF"
+                        style={styles.iconright}
+                        onPress={() => navigation.goBack()}
+            />
+          </TouchableOpacity>          
           <Text style={styles.welcometext}>{friend.Name} </Text>
+        </View>
+        <LinearGradient colors={['#9E97D4', '#24182E']} start={{ x: 0, y: 0 }} end={{ x: 1, y: 0}} style={styles.empty1}></LinearGradient>
+        <View style={styles.maincontainer}>
+          
         </View>
         
       {/* <GiftedChat 
@@ -305,14 +326,19 @@ const styles = StyleSheet.create({
   },
   container: {
     justifyContent: 'flex-start',
-    backgroundColor: '#2d2d2d',
+    backgroundColor: '#ffffff',
     height: windowHeight,
   },
   navbar: {
     height: windowHeight/15,
-    backgroundColor: '#2d2d2d',
+    backgroundColor: '#ffffff',
     flexDirection: 'row',
-    marginLeft: -25,
+    // marginLeft: -25,
+  },
+  iconCOntainer: {
+    marginLeft: 10,
+    alignItems: 'center',
+    justifyContent: 'center',
   },
   addFriend:{
     height: 42,
@@ -373,10 +399,13 @@ const styles = StyleSheet.create({
     flexWrap: 'wrap',
   },
   welcometext: {
-    fontSize: 22,
+    alignSelf: 'center',
+    fontSize: 24,
     fontWeight: '100',
-    color: '#ffbe8f',
-    textTransform: 'uppercase'
+    color: '#000000',
+    textTransform: 'uppercase',
+    fontFamily: 'Montserrat-Regular',
+    marginLeft: 20,
   },
   welcometext1: {
     fontSize: 22,

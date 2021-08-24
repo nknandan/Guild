@@ -94,7 +94,7 @@ const SignupScreen = ({navigation}) => {
 
     return (
         <View>
-          <LinearGradient colors={['#2d2d2d', '#543965']} start={{ x: 0, y: 0.3 }} end={{ x: 0, y: 1}} style={styles.container}>
+          <LinearGradient colors={['#ffffff', '#D6C1E7']} start={{ x: 0, y: 0.3 }} end={{ x: 0, y: 1}} style={styles.container}>
             {/* <Image source={require('../assets/logo.png')} style={styles.logo}/> */}
             <Text style={styles.text}>Create an account</Text>
             <FormInput 
@@ -220,11 +220,9 @@ const SignupScreen = ({navigation}) => {
               <TouchableOpacity
                   style={styles.navButton1}
                   onPress={() => navigation.navigate('Login')}>
-                  <Text style={styles.navButtonText}>Have an account? Log In</Text>
+                  <Text style={styles.navButtonText}>Have an account?</Text><Text style={styles.navButtonText1}> Log In</Text>
               </TouchableOpacity>
-
             </View>
-
           </LinearGradient>
         </View>
     );
@@ -233,66 +231,74 @@ const SignupScreen = ({navigation}) => {
 export default SignupScreen;
 
 const styles = StyleSheet.create({
-    container: {
-      // justifyContent: 'center',
-      alignItems: 'center',
-      padding: 20,
-      paddingTop: 50,
-      backgroundColor: '#2d2d2d',
-      height: windowHeight,
-      marginTop: -50,
+  container: {
+    // justifyContent: 'center',
+    alignItems: 'center',
+    padding: 20,
+    paddingTop: 50,
+    backgroundColor: '#2d2d2d',
+    height: windowHeight,
+    marginTop: -50,
+  },
+  container1: {
+    marginTop: 366,
+    position: 'absolute',
+    alignItems: 'center',
+    padding: 20,
+    paddingTop: 50,
+    backgroundColor: 'transparent',
+    height: windowHeight,
+    width: '110%',
+  },
+  logo: {
+    height: 150,
+    width: 150,
+    resizeMode: 'cover',
+    marginTop: -0,
+  },
+  errorMsg: {
+    color: '#E08384',
+    fontSize: 14,
+  },
+  text: {
+    fontFamily: 'Montserrat-Regular',
+    fontSize: 26,
+    marginLeft: -110,
+    marginBottom: 10,
+    marginTop: 10,
+    color: '#676767',
+  },
+  navButton1: {
+      margin: 25,
+  },
+  navButtonText: {
+    marginTop: 0,
+    fontSize: 18,
+    color: '#676767',
+    fontFamily: 'Montserrat-Regular',
+  },
+  navButtonText1: {
+    alignSelf: 'center',
+    marginTop: -6,
+    fontSize: 18,
+    color: '#4B4B4B',
+    fontWeight: 'bold'
+    // fontFamily: 'Montserrat-Regular',
+  },
+  textPrivate: {
+      flexDirection: 'row',
+      flexWrap: 'wrap',
+      marginVertical: 35,
+      justifyContent: 'center',
+      marginBottom: 20,
     },
-    container1: {
-      marginTop: 366,
-      position: 'absolute',
-      alignItems: 'center',
-      padding: 20,
-      paddingTop: 50,
-      backgroundColor: 'transparent',
-      height: windowHeight,
-      width: '110%',
-    },
-    logo: {
-      height: 150,
-      width: 150,
-      resizeMode: 'cover',
-      marginTop: -0,
-    },
-    errorMsg: {
-      color: '#E08384',
-      fontSize: 14,
-    },
-    text: {
-      fontFamily: 'Kufam-SemiBoldItalic',
-      fontSize: 26,
-      marginLeft: -140,
-      marginBottom: 10,
-      color: '#ffbe8f',
-    },
-    navButton1: {
-        margin: 25,
-    },
-    navButtonText: {
-      marginTop: -8,
-      fontSize: 18,
-      fontWeight: '500',
-      color: '#ffbe8f',
+    color_textPrivate: {
+      fontSize: 13,
+      fontWeight: '100',
       fontFamily: 'Lato-Regular',
+      color: '#676767',
     },
-    textPrivate: {
-        flexDirection: 'row',
-        flexWrap: 'wrap',
-        marginVertical: 35,
-        justifyContent: 'center',
-        marginBottom: 20,
-      },
-      color_textPrivate: {
-        fontSize: 13,
-        fontWeight: '400',
-        fontFamily: 'Lato-Regular',
-        color: 'white',
-      },
-      // empty: {
-      //   marginBottom: 6,
-      // },
-  });
+    // empty: {
+    //   marginBottom: 6,
+    // },
+});

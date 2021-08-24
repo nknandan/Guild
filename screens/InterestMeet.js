@@ -238,17 +238,22 @@ const InterestMeet = ({navigation, route}) => {
       Alert.alert("Hold on!", "Are you sure you want to exit this room?", [
         {
           text: "Cancel",
-          onPress: () => null,
+          onPress: () => {
+            backHandler.remove();             
+          },
           style: "cancel"
         },
-        { text: "YES", onPress: () => {
-          console.log(`Remove RoomId: ${roomUid}`);
-          userExited = true;
-          RoomsCollection.doc(roomUid).delete().then(() => {
-            console.log('Room Cleared');
-          });
-          navigation.goBack()
-        }  }
+        { 
+          text: "YES", onPress: () => {
+            console.log(`Remove RoomId: ${roomUid}`);
+            userExited = true;
+            RoomsCollection.doc(roomUid).delete().then(() => {
+              console.log('Room Cleared');
+            });
+            backHandler.remove();             
+            navigation.goBack();
+         }
+        }
       ]);
       return true;
     };
@@ -256,7 +261,8 @@ const InterestMeet = ({navigation, route}) => {
     const backHandler = BackHandler.addEventListener(
       "hardwareBackPress",
       backAction
-    );
+    );   
+
   }
 
   function clearFriendRequests(){
@@ -287,15 +293,20 @@ const InterestMeet = ({navigation, route}) => {
         {...props}
         wrapperStyle={{
           right: {
-            backgroundColor: '#ffbe8f',
+            backgroundColor: '#000000',
+            borderBottomRightRadius: 0,
           },
           left: {
-            backgroundColor: '#8d83e0',
+            backgroundColor: '#ffffff',
+            borderBottomLeftRadius: 0,
           }
         }}
         textStyle={{
+          left: {
+            color: '#000000',
+          },
           right: {
-            color: '#000',
+            color: '#ffffff',
           },
         }}
         usernameStyle={{
@@ -314,31 +325,37 @@ const InterestMeet = ({navigation, route}) => {
             color: 'rgba(0,0,0,0.6)',
           },
           right: {
-            color: 'rgba(0,0,0,0.6)',
+            color: 'rgba(225,225,225,0.6)',
           },
         }}
       />
     );
   };
 
+  const renderDay = (props) => {
+    return <Day {...props} textStyle={{color: '#24182E'}}/>
+  }
+
+
   const customtInputToolbar = props => {
     return (
       <InputToolbar
         {...props}
         containerStyle={{
-          backgroundColor: "#2d2d2d",
-          borderTopColor: "#9E97D4",
-          borderTopWidth: 1,
+          backgroundColor: "#000000",
+          borderTopColor: "#ffffff",
+          borderTopWidth: 2,
           padding: 1,
           borderTopLeftRadius: 20, 
           borderTopRightRadius: 20, 
         }}
-        placeholder="Enter your message"
-        placeholderTextColor="rgba(255, 190, 143, 0.51)"
+        placeholder="Enter your message..."
+        placeholderTextColor="rgba(188, 122, 255, 0.56)"
 
       />
     );
   };
+
 
   function addFriend(){
     console.log(`OtherUserId ${otherUserId}`);
@@ -355,12 +372,12 @@ const InterestMeet = ({navigation, route}) => {
 
   return(
       <View style= {styles.newc1}>
-      <LinearGradient colors={['#2d2d2d', '#653942']} start={{ x: 0, y: 0.5 }} end={{ x: 0, y: 1}} style={styles.newc2}>
+      <LinearGradient colors={['#ffffff', '#D6C1E7']} start={{ x: 0, y: 0.5 }} end={{ x: 0, y: 1}} style={styles.newc2}>
         <View style={styles.navbar}>
           <Logoanimation/>
           <Image source={require('../assets/logo_name.png')} style={styles.logon}/>
         </View>
-        <LinearGradient colors={['#9E97D4', '#ffbe8f']} start={{ x: 0, y: 0 }} end={{ x: 1, y: 0}} style={styles.empty1}></LinearGradient>
+        <LinearGradient colors={['#9E97D4', '#24182E']} start={{ x: 0, y: 0 }} end={{ x: 1, y: 0}} style={styles.empty1}></LinearGradient>
         <View style={styles.maincontainer}>
           <Text style={styles.welcometext}>You are connected on</Text>
           <Text style={styles.welcometext69}>{route.params.roomName}</Text>
@@ -412,7 +429,7 @@ const styles = StyleSheet.create({
     flex: 1,
   },
   chatContainer: {
-
+    marginTop: 1,
     flex: 1,
   },
   newc3: {
@@ -431,7 +448,7 @@ const styles = StyleSheet.create({
   },
   navbar: {
     height: windowHeight/15,
-    backgroundColor: '#2d2d2d',
+    backgroundColor: '#ffffff',
     flexDirection: 'row',
     marginLeft: -25,
   },
@@ -492,13 +509,15 @@ const styles = StyleSheet.create({
     fontSize: 16,
     marginTop: -6,
     fontWeight: '100',
-    color: 'white',
+    color: '#676767',
+    fontFamily: 'Montserrat-Regular',
     textTransform: 'uppercase'
   },
   welcometext69: {
     fontSize: 26,
     fontWeight: '100',
-    color: '#ffbe8f',
+    color: 'black',
+    fontFamily: 'Montserrat-Regular',
     textTransform: 'uppercase'
   },
   userNotConnectedRoom: {
@@ -508,14 +527,15 @@ const styles = StyleSheet.create({
     height: 200,
     marginTop: 150,
     flexDirection: 'row',
-    marginLeft: 220,
+    marginLeft: 270,
   },
   userNotConnectedRoomText: {
-    fontSize: 20,
+    fontSize: 24,
     marginTop: 0,
-    marginLeft: -220,
+    marginLeft: -260,
     fontWeight: '100',
-    color: 'white',
+    fontFamily: 'Montserrat-Regular',
+    color: 'black',
     textTransform: 'uppercase'    
   },
   userNotConnectedRoomLogo: {
@@ -525,7 +545,7 @@ const styles = StyleSheet.create({
   welcometext1: {
     fontSize: 22,
     fontWeight: '100',
-    color: 'white',
+    color: 'black',
   },
   empty2: {
     height: windowHeight-200,

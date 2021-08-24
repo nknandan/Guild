@@ -15,7 +15,7 @@ const FormButton = ({labelValue, placeholderText, iconType, error, ...rest}) => 
                 value={labelValue}
                 numberOfLines={1}
                 placeholder={placeholderText}
-                placeholderTextColor='#575757'
+                placeholderTextColor='#845CA1asd'
                 {...rest}
             />
         </View>
@@ -30,7 +30,7 @@ const styles = StyleSheet.create({
       marginBottom: 10,
       width: '100%',
       height: windowHeight / 15,
-      borderColor: '#9100FF',
+      borderColor: '#575757',
       borderRadius: 20,
       borderWidth: 2,
       flexDirection: 'row',
@@ -42,7 +42,7 @@ const styles = StyleSheet.create({
       height: '100%',
       justifyContent: 'center',
       alignItems: 'center',
-      borderColor: '#9100FF',
+      borderColor: '#575757',
       borderRightColor: '#ccc',
       borderRightWidth: 2,
       width: 50,

@@ -75,7 +75,7 @@ const AuthStack = () => {
                     name="long-arrow-left"
                     size={25}
                     backgroundColor="#ffffff"
-                    color="#8d83e0"
+                    color="#9100FF"
                     onPress={() => navigation.navigate('Login')}
                   />
                 </View>

@@ -42,29 +42,16 @@ const UserProfile = ({navigation}) => {
 
   return(
     <View>
-      <LinearGradient colors={['#2d2d2d', '#3C6539']} start={{ x: 0, y: 0.5 }} end={{ x: 0, y: 1}} style={styles.container}>
+      <LinearGradient colors={['#ffffff', '#D6C1E7']} start={{ x: 0, y: 0.5 }} end={{ x: 0, y: 1}} style={styles.container}>
            <View style={styles.navbar}>
-            {/* <View>
-            <Image source={require('../assets/logo_circle.png')} style={styles.logoc}/>
-            </View> */}
-            <Logoanimation/>
-            {/* <Image source={require('../assets/logo_circle.png')} style={styles.logoc}/> */}
-            <Image source={require('../assets/logo_name.png')} style={styles.logon}/>
-            {/* <TouchableOpacity style={styles.usercon}>
-              <Icon.Button
-                name="envelope"
-                backgroundColor="#2d2d2d"
-                color='#8d83e0'
-                size={30}
-                style={styles.user}
-                onPress={() => navigation.navigate('MessagesScreen')}
-              />
-            </TouchableOpacity> */}
+              <Logoanimation/>
+              <Image source={require('../assets/logo_name.png')} style={styles.logon}/>
            </View>
-           <LinearGradient colors={['#9E97D4', '#ffbe8f']} start={{ x: 0, y: 0 }} end={{ x: 1, y: 0}} style={styles.empty1}></LinearGradient>
+           <LinearGradient colors={['#9E97D4', '#24182E']} start={{ x: 0, y: 0 }} end={{ x: 1, y: 0}} style={styles.empty1}></LinearGradient>
            <View style={styles.maincontainer}>
-            <Text style={styles.welcometext}>Welcome {userName}</Text>
-            <LinearGradient colors={['#9E97D4', '#ffbe8f']} start={{ x: 0, y: 0 }} end={{ x: 0, y: 1}} style={styles.empty2}></LinearGradient>
+           <Text style={styles.welcometext}>Welcome</Text>
+            <Text style={styles.userNameText}>{userName}</Text>
+            <LinearGradient colors={['#9E97D4', '#24182E']} start={{ x: 0, y: 0 }} end={{ x: 0, y: 1}} style={styles.empty2}></LinearGradient>
             <View style={styles.maincontainer1}>
               <Text style={styles.welcometext1}>Your Friends</Text>
               <ScrollView style={styles.scrollViewS}>
@@ -75,7 +62,7 @@ const UserProfile = ({navigation}) => {
             </View>
            </View>
            <TouchableOpacity style={styles.logoutButton} onPress={() => logout()}>
-                <FontAwesome name={'sign-out'} size={34} color={'#8d83e0'}/>
+                <FontAwesome name={'sign-out'} size={34} color={'#9100FF'}/>
             </TouchableOpacity>
           </LinearGradient>
     </View>
@@ -85,86 +72,100 @@ const UserProfile = ({navigation}) => {
 export default UserProfile;
 
 const styles = StyleSheet.create({
-    container: {
-      justifyContent: 'flex-start',
-      backgroundColor: '#2d2d2d',
-      height: windowHeight,
-    },
-    navbar: {
-      height: windowHeight/15,
-      backgroundColor: '#2d2d2d',
-      flexDirection: 'row',
-      marginLeft: -25,
-    },
-    logoc: {
-      height: 120,
-      width: 120,
-      marginLeft: -25,
-    },
-    logon: {
-      height: 90,
-      width: 90,
-      marginTop: -34,
-      marginLeft: -50,
-    },
-    empty1: {
-      height: 2,
-      backgroundColor: 'red',
-    },
-    usercon: {
-      marginTop: 4,
-      marginLeft: 210,
-      alignItems: 'center',
-    },
-    maincontainer: {
-      padding: 20,
-    },
-    maincontainer1: {
-      padding: 15,
-    },
-    maincontainer2: {
-      padding: 15,
-      paddingLeft: 0,
-      height: 540,
-      // backgroundColor: 'white',
-      flexWrap: 'wrap',
-    },
-    scroll: {
-      flex: 1,
-      paddingRight: 10,
-      width: '110%',
-    },
-    maincontainer3: {
-      height: 790,
-      // backgroundColor: 'white',
-      flexWrap: 'wrap',
-    },
-    welcometext: {
-      fontSize: 22,
-      fontWeight: '100',
-      color: '#ffbe8f',
-      textTransform: 'uppercase'
-    },
-    welcometext1: {
-      fontSize: 22,
-      fontWeight: '100',
-      color: 'white',
-    },
-    empty2: {
-      height: windowHeight-200,
-      width: 2,
-      marginTop: 10,
-      marginBottom: -(windowHeight-190),
-    },
-    logoutButton: {
-      position: 'absolute',
-      marginTop: 71,
-      marginLeft: windowWidth-36,
-    },
-    scrollViewS: {
-      height: 524,
-      width: '110%'
-    }
-  
-  });
+  container: {
+    justifyContent: 'flex-start',
+    backgroundColor: '#2d2d2d',
+    height: windowHeight,
+  },
+  navbar: {
+    height: windowHeight/15,
+    backgroundColor: '#ffffff',
+    flexDirection: 'row',
+    marginLeft: -25,
+  },
+  logoc: {
+    height: 120,
+    width: 120,
+    marginLeft: -25,
+  },
+  logon: {
+    height: 90,
+    width: 90,
+    marginTop: -34,
+    marginLeft: -50,
+  },
+  empty1: {
+    height: 2,
+    backgroundColor: 'red',
+  },
+  usercon: {
+    marginTop: 4,
+    marginLeft: 210,
+    alignItems: 'center',
+  },
+  maincontainer: {
+    padding: 20,
+  },
+  maincontainer1: {
+    padding: 15,
+  },
+  maincontainer2: {
+    padding: 15,
+    paddingLeft: 0,
+    height: 540,
+    // backgroundColor: 'white',
+    flexWrap: 'wrap',
+  },
+  scroll: {
+    flex: 1,
+    paddingRight: 10,
+    width: '110%',
+  },
+  maincontainer3: {
+    height: 790,
+    // backgroundColor: 'white',
+    flexWrap: 'wrap',
+  },
+  welcometext: {
+    fontSize: 22,
+    fontWeight: '100',
+    color: '#676767',
+    // textTransform: 'uppercase'
+    fontFamily: 'Montserrat-Regular',
+  },
+  userNameText: {
+    fontSize: 26,
+    fontWeight: '100',
+    color: '#000000',
+    fontFamily: 'Montserrat-Regular',
+    marginTop: -30,
+    marginLeft: 112,
+  },
+  welcometext1: {
+    fontSize: 18,
+    fontWeight: '100',
+    color: '#676767',
+    fontFamily: 'Montserrat-Regular',
+    marginBottom: 12,
+  },
+  empty2: {
+    height: windowHeight-200,
+    width: 2,
+    marginTop: 10,
+    marginBottom: -(windowHeight-190),
+  },
+  logoutButton: {
+    padding: 8,
+    position: 'absolute',
+    backgroundColor: '#E7E7E7',
+    marginTop: 59,
+    marginLeft: windowWidth-64,
+    borderRadius: 24,
+  },
+  scrollViewS: {
+    height: 524,
+    width: '110%'
+  }
+
+});
   
