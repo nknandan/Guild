@@ -223,6 +223,7 @@ const InterestMeet = ({navigation, route}) => {
             if(friend === connectedUserId){
               //Friend found
               setAddf(['Friend Added','check-circle','white']);
+              setFriendAdded(true);
             }
             return friend === connectedUserId;
           })
@@ -392,7 +393,7 @@ const InterestMeet = ({navigation, route}) => {
                 renderInputToolbar={props => customtInputToolbar(props)}
                 renderComposer={(props) => <Composer textInputStyle={{color: 'white'}} {...props} />}
               />
-              <TouchableOpacity style={styles.addFriend} onPress={() => {
+              <TouchableOpacity style={styles.addFriend} disabled={friendAdded} onPress={() => {
                 addFriend();
                 }}>          
                 <LinearGradient colors={['#8d83e0', '#9E97D4']} start={{ x: 0, y: 0 }} end={{ x: 1, y: 0}} style={styles.newc3}>
