@@ -98,6 +98,7 @@ const InterestMeet = ({navigation, route}) => {
               {text: 'Reconnect', onPress: () => {
                 setMessages([]);
                 setOtherUserId("");
+                setFriendAdded(false);
                 Initialize();
               }},
               {text: 'Cancel', onPress: () => {
