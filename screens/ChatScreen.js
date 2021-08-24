@@ -246,6 +246,8 @@ const ChatScreen = ({navigation, route}) => {
           backgroundColor: "#000000",
           borderTopColor: "#ffffff",
           borderTopWidth: 2,
+          borderBottomWidth: 1,
+          borderBottomColor: '#9100FF',
           padding: 1,
           borderTopLeftRadius: 20, 
           borderTopRightRadius: 20, 
@@ -291,16 +293,6 @@ const ChatScreen = ({navigation, route}) => {
         renderComposer={(props) => <Composer textInputStyle={{color: 'white'}} {...props} />}
         // renderAvatar={nul}
       /> */}
-      {/* <TouchableOpacity style={styles.addFriend} onPress={() => {
-        addFriend();
-        }}>          
-        <LinearGradient colors={['#8d83e0', '#9E97D4']} start={{ x: 0, y: 0 }} end={{ x: 1, y: 0}} style={styles.newc3}>
-          <View style={styles.addfriendIcon}> 
-            <FontAwesome name={addf[1]} size={25} color={'#ffbe8f'}/>
-          </View>
-          <Text style={{color: addf[2], fontSize: 20, fontWeight: 'bold'}}>{addf[0]}</Text>
-        </LinearGradient>
-        </TouchableOpacity> */}
       </LinearGradient>
     </View>
   );

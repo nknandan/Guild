@@ -40,6 +40,8 @@ const InterestMeet = ({navigation, route}) => {
 
   let userExited = false;
 
+  let otherUserId1 = true;
+
   useEffect(()=>{
     //Initialize
     Initialize();
@@ -346,9 +348,12 @@ const InterestMeet = ({navigation, route}) => {
           backgroundColor: "#000000",
           borderTopColor: "#ffffff",
           borderTopWidth: 2,
+          borderBottomWidth: 1,
+          borderBottomColor: '#9100FF',
           padding: 1,
           borderTopLeftRadius: 20, 
           borderTopRightRadius: 20, 
+          elevation: 10,
         }}
         placeholder="Enter your message..."
         placeholderTextColor="rgba(188, 122, 255, 0.56)"
@@ -399,13 +404,26 @@ const InterestMeet = ({navigation, route}) => {
               <TouchableOpacity style={styles.addFriend} disabled={friendAdded} onPress={() => {
                 addFriend();
                 }}>          
-                <LinearGradient colors={['#8d83e0', '#9E97D4']} start={{ x: 0, y: 0 }} end={{ x: 1, y: 0}} style={styles.newc3}>
+                <LinearGradient colors={['#D6C1E7', '#9E97D4']} start={{ x: 0, y: 0 }} end={{ x: 1, y: 0}} style={styles.newc3}>
                   <View style={styles.addfriendIcon}> 
-                    <FontAwesome name={addf[1]} size={25} color={'#ffbe8f'}/>
+                    <FontAwesome name={addf[1]} size={25} color={'#9100FF'}/>
                   </View>
                   <Text style={{color: addf[2], fontSize: 20, fontWeight: 'bold'}}>{addf[0]}</Text>
                 </LinearGradient>
               </TouchableOpacity>
+              <View style={styles.userNameHeader}>
+                <TouchableOpacity style={styles.iconCOntainer}>
+                  <FontAwesome
+                              name="long-arrow-left"
+                              size={25}
+                              backgroundColor="#ffffff"
+                              color="#9100FF"
+                              style={styles.iconright}
+                              onPress={() => navigation.goBack()}
+                  />
+                </TouchableOpacity>          
+                <Text style={styles.welcometext420}>Senzi</Text>
+              </View>              
             </View>
             : 
             <View style={styles.userNotConnectedRoom}>
@@ -423,6 +441,13 @@ const InterestMeet = ({navigation, route}) => {
 export default InterestMeet;
 
 const styles = StyleSheet.create({
+  userNameHeader: {
+    flexDirection: 'row',
+    position: 'absolute',
+    backgroundColor: 'white',
+    marginTop: -134,
+    height: 44,
+  },
   newc1: {
     flex: 1,
   },
@@ -432,6 +457,15 @@ const styles = StyleSheet.create({
   chatContainer: {
     marginTop: 1,
     flex: 1,
+  },
+  welcometext420: {
+    alignSelf: 'center',
+    fontSize: 24,
+    fontWeight: '100',
+    color: '#000000',
+    textTransform: 'uppercase',
+    fontFamily: 'Montserrat-Regular',
+    marginLeft: 20,
   },
   newc3: {
     height: '100%',
@@ -464,6 +498,7 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     borderTopLeftRadius: 20,
     borderBottomLeftRadius: 20,
+    elevation: 10,
   },
   addfriendIcon: {
     marginHorizontal: 6,
@@ -519,7 +554,7 @@ const styles = StyleSheet.create({
     fontWeight: '100',
     color: 'black',
     fontFamily: 'Montserrat-Regular',
-    textTransform: 'uppercase'
+    textTransform: 'uppercase',
   },
   userNotConnectedRoom: {
     alignSelf: 'center',
@@ -554,5 +589,9 @@ const styles = StyleSheet.create({
     marginTop: 10,
     marginBottom: -(windowHeight-190),
   },
-
+  iconCOntainer: {
+    marginLeft: 10,
+    alignItems: 'center',
+    justifyContent: 'center',
+  },
 });
