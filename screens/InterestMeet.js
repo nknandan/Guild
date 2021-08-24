@@ -258,8 +258,9 @@ const InterestMeet = ({navigation, route}) => {
             .then(() => {
               console.log("Message Saved to Server");
             });
+          }else{
+            RoomsCollection.doc(roomUid).delete();
           }
-          RoomsCollection.doc(roomUid).delete();
           backHandler.remove();    
           navigation.goBack()
         }  }
