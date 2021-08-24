@@ -21,157 +21,120 @@ const ChatScreen = ({navigation, route}) => {
 
   const {friend} = route.params;
 
+  let friendId = friend.UserUid;
+
   console.log(JSON.stringify(friend));
+  
+  const [messages, setMessages] = useState([]);
+  
+  const [roomId, setRoomId] = useState("");
+  
+  const [otherUserId, setOtherUserId] = useState("");
+  
+  const [otherUserName, setOtherUserName] = useState("");
 
-//   const [messages, setMessages] = useState([]);
+  const [messageSaveTimeout, setMessageSaveTimeout] = useState();
+  
+  const RoomsCollection = firestore().collection('Rooms');
+  
+  const UsersCollection = firestore().collection('Users');
 
-//   const [roomId, setRoomId] = useState("");
+  useEffect(() => {
+    Initialize();
+  }, []);
 
-//   const [otherUserId, setOtherUserId] = useState("");
+  useEffect(()=>{
+    if(messages.length > 0){
+      if(messageSaveTimeout){
+        clearTimeout(messageSaveTimeout);
+      }
+      let msgSaveTimeout = setTimeout(function (){
+        RoomsCollection.doc(roomId).update({
+          'Messages': messages
+        })
+        .then(() => {
+          console.log("Message Saved to Server");
+        });
+      }, 100)
+      setMessageSaveTimeout(msgSaveTimeout);
+    }
+  }, [messages]);
+  
+  function Initialize(){
+    if(roomId !== ""){
+      return;
+    }
+    
+    const {friend} = route.params;
+    setRoomId(friend.roomId)
 
-//   const [otherUserName, setOtherUserName] = useState("");
+    RoomsCollection.doc('' + friend.roomId).get().then(roomSnapshot => {
+      let roomData = roomSnapshot.data();
+      console.log(`Room DATA ${JSON.stringify(roomData)}`);
+      setMessages(roomData.Messages)
+    })
 
-//   const RoomsCollection = firestore().collection('Rooms');
+    startListening(friend.roomId);
+  }
 
-//   const UsersCollection = firestore().collection('Users');
+  function startListening(roomUid){
 
-//   const [addf, setAddf] = useState(['Add Friend','user-plus','#2d2d2d']);
+    console.log(`Room id ${roomUid}`);
+    let connectedUserId;
+    let connectedUserName;
 
-//   let userExited = false;
+    RoomsCollection.doc('' + roomUid).onSnapshot(documentSnapshot => {
+      let updatedData = documentSnapshot.data();
+      if(!updatedData){
+        //Room No Longer Exists
+        //TODO: Unfriend or Show Toast
+      }
 
-//   Initialize();
+      //Get user Details 
+      if(!connectedUserId || !otherUserId){
+        //Get User id
+        if(!otherUserId || !connectedUserId){
+          updatedData.ConnectedUsers.forEach(user => {;
+            if(user !== auth().currentUser.uid){
+              connectedUserId = user;
+              setOtherUserId(user);
+            }
+          })
+        }
+      }
 
-//   useEffect(() => {
-//     console.log("use Effect");
-//     console.log(`RoomId ${roomId}`);
-//   }, []);
+      UsersCollection.doc('' + connectedUserId).get().then(snapshot => {
+        let connectedUserData = snapshot.data();
+        console.log(`Connected User Data ${JSON.stringify(connectedUserData)}`);
+        if(!connectedUserName || !otherUserName){
+          //Get user Name
+          connectedUserName = connectedUserData.Name;
+          setOtherUserName(connectedUserName);
+        }
+      }).catch(e => {
+        console.log(e);
+      });
 
-//   function Initialize(){
-//     console.log("hi");
-//     console.log(`STRAT ROOM ${JSON.stringify(roomId)}`);
-//     if(roomId !== ""){
-//       return;
-//     }
-//     const {roomName} = route.params;
+      //Checking if they sent any message
+      if(updatedData[`${connectedUserId}_Message`]){
+        RoomsCollection.doc(roomUid).update({
+          [`${connectedUserId}_Message`]: firestore.FieldValue.delete()
+        });
+        onMessageReceive(
+          {
+            _id: new Date().getTime(),
+            text: updatedData[`${connectedUserId}_Message`],
+            createdAt: new Date().getTime(),
+            user: {
+              _id: connectedUserId,
+              name: connectedUserName
+            }
+          }
+        )
+      }
+    }); 
+  }
 
-//     RoomsCollection.where('Connected', '<', 2).where("Interest", "==", roomName).get().then(querySnapshot => {
-
-//       let rooms = querySnapshot._docs;
-
-//       if(rooms.length > 0){
-//         //Rooms Available
-//         console.log(`Setting Room Id: ${rooms[0]._ref.id}`);
-//         setRoomId(rooms[0]._ref.id);
-
-//         RoomsCollection.doc(rooms[0]._ref.id).update({
-//           'Connected': 2,
-//           'ConnectedUsers': firestore.FieldValue.arrayUnion(auth().currentUser.uid)
-//         })
-//         .then(() => {
-//           console.log('Room Connected');   
-//           console.log("Listening");
-//           startListening(rooms[0]._ref.id);
-//         });
-
-//       }else {
-//         //Create a new Room
-//         RoomsCollection.add({
-//           Interest: roomName,
-//           ConnectedUsers: [auth().currentUser.uid],
-//           Connected: 1
-//         })
-//         .then((snapshot) => {
-//           console.log(snapshot._documentPath._parts[1]);
-
-//           console.log(`Setting Room Id: ${snapshot._documentPath._parts[1]}`);
-//           setRoomId(snapshot._documentPath._parts[1]);
-
-//           console.log('Room Created and Waiting!');
-//           console.log("Listening");
-//           startListening(snapshot._documentPath._parts[1]);
-//         });
-//       }
-//     });
-//   }
-
-//   function startListening(roomUid){
-//     let connectedUserId;
-//     let connectedUserName;
-
-//     console.log(`Room UID: ${roomUid}`);
-
-//     RoomsCollection.doc(roomUid).onSnapshot(documentSnapshot => {
-//       console.log(documentSnapshot);
-//       let updatedData = documentSnapshot.data();
-//       if(!updatedData){
-//         //User Disconnected
-//         if(!userExited){
-//           Alert.alert(
-//             'User Disconnected',
-//             'Do you want to find a new user?',
-//             [
-//               {text: 'Reconnect', onPress: () => {
-//                 setMessages([]);
-//                 Initialize();
-//               }},
-//               {text: 'Cancel', onPress: () => {
-//                 navigation.goBack();
-//               }},
-//             ],
-//             { cancelable: false }
-//           )
-//         }
-//         return;
-//       }
-
-//       //Get user Details 
-//       if(!connectedUserId || !otherUserId){
-//         //Get User id
-//         if(!otherUserId || !connectedUserId){
-//           updatedData.ConnectedUsers.forEach(user => {
-//             console.log(`User ${user}`);
-//             if(user !== auth().currentUser.uid){
-//               connectedUserId = user;
-//               setOtherUserId(user);
-//             }
-//           })
-//         }
-//       }
-
-//       if(!connectedUserName || !otherUserName){
-//         //Get user Name
-//         UsersCollection.doc(connectedUserId).get().then(snapshot => {
-//           let userData = snapshot.data();
-//           connectedUserName = userData.Name;
-//           setOtherUserName(connectedUserName);
-//         }).catch(e => {
-//           console.log(e);
-//         });
-//       }
-
-//       //Checking if they sent any message
-//       console.log(updatedData[`${connectedUserId}_Message`]);
-
-//       if(updatedData[`${connectedUserId}_Message`]){
-//         RoomsCollection.doc(roomUid).update({
-//           [`${connectedUserId}_Message`]: firestore.FieldValue.delete()
-//         });
-//         onMessageReceive(
-//           {
-//             _id: new Date().getTime(),
-//             text: updatedData[`${connectedUserId}_Message`],
-//             createdAt: new Date().getTime(),
-//             user: {
-//               _id: connectedUserId,
-//               name: connectedUserName
-//             }
-//           }
-//         )
-//       }
-//       console.log('Room data: ', documentSnapshot.data());
-//     }); 
-
-//   }
 
   function onMessageReceive(newMessage = []) {
     setMessages(previousMessages => GiftedChat.append(previousMessages, newMessage));
@@ -279,7 +242,7 @@ const ChatScreen = ({navigation, route}) => {
           
         </View>
         
-      {/* <GiftedChat 
+      {<GiftedChat 
         messages={messages}
         onSend={newMessage => onMessageSent(newMessage)}
         user={{
@@ -290,17 +253,7 @@ const ChatScreen = ({navigation, route}) => {
         renderInputToolbar={props => customtInputToolbar(props)}
         renderComposer={(props) => <Composer textInputStyle={{color: 'white'}} {...props} />}
         // renderAvatar={nul}
-      /> */}
-      {/* <TouchableOpacity style={styles.addFriend} onPress={() => {
-        addFriend();
-        }}>          
-        <LinearGradient colors={['#8d83e0', '#9E97D4']} start={{ x: 0, y: 0 }} end={{ x: 1, y: 0}} style={styles.newc3}>
-          <View style={styles.addfriendIcon}> 
-            <FontAwesome name={addf[1]} size={25} color={'#ffbe8f'}/>
-          </View>
-          <Text style={{color: addf[2], fontSize: 20, fontWeight: 'bold'}}>{addf[0]}</Text>
-        </LinearGradient>
-        </TouchableOpacity> */}
+      /> }
       </LinearGradient>
     </View>
   );

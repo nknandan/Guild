@@ -31,6 +31,7 @@ const UserProfile = ({navigation}) => {
       friendIds.forEach(friendId => {
         firestore().collection("Users").doc('' + friendId).get().then(friendSnapshot => {
           let friendData = friendSnapshot.data();
+          friendData.roomId = userData.Friends[friendId]
           setFriends(oldFriendsList => [...oldFriendsList, friendData]);
         });
       })
@@ -56,6 +57,7 @@ const UserProfile = ({navigation}) => {
               <Text style={styles.welcometext1}>Your Friends</Text>
               <ScrollView style={styles.scrollViewS}>
                 {friends.map((friend, key) => {
+                  console.log(`OBJJ ${friend}`);
                   return (<FriendBar key={key} friendName={'' + friend.Name} friendObj={friend}/>)
                 })}
               </ScrollView>              

@@ -24,6 +24,10 @@ const InterestMeet = ({navigation, route}) => {
   
   const [messages, setMessages] = useState([]);
 
+  const [backHandler, setBackHandler] = useState();
+
+  const [messageSaveTimeout, setMessageSaveTimeout] = useState();
+
   const [friendAdded, setFriendAdded] = useState(false);
 
   const [roomId, setRoomId] = useState("");
@@ -44,6 +48,56 @@ const InterestMeet = ({navigation, route}) => {
     //Initialize
     Initialize();
   }, []);
+
+  useEffect(()=>{
+    if(friendAdded && messages.length > 0){
+      if(messageSaveTimeout){
+        clearTimeout(messageSaveTimeout);
+      }
+      let msgSaveTimeout = setTimeout(function (){
+        RoomsCollection.doc(roomId).update({
+          'Messages': messages
+        })
+        .then(() => {
+          console.log("Message Saved to Server");
+        });
+      }, 100)
+      setMessageSaveTimeout(msgSaveTimeout);
+    }
+  }, [messages]);
+
+  useEffect(()=>{
+    const backAction = () => {
+      Alert.alert("Hold on!", "Are you sure you want to exit this room?", [
+        {
+          text: "Cancel",
+          onPress: () => {
+            backHandler.remove();             
+          },
+          style: "cancel"
+        },
+        { text: "YES", onPress: () => {
+          userExited = true;
+          console.log(`FriendAdded ${friendAdded}`);
+          if(!friendAdded){
+            RoomsCollection.doc(roomUid).delete();
+          }
+          
+          navigation.goBack()
+        }  }
+      ]);
+      return true;
+    };
+
+    const tBackHandler = BackHandler.addEventListener(
+      "hardwareBackPress",
+      backAction
+    ); 
+    if(backHandler){
+      backHandler.remove();
+    }  
+    setBackHandler(tBackHandler)
+  }, [friendAdded]);
 
   function Initialize(){
     if(roomId !== ""){
@@ -195,13 +249,6 @@ const InterestMeet = ({navigation, route}) => {
                         //Added Friend
   
                         setAddf(['Friend Added','check-circle','white']);
-  
-                        RoomsCollection.doc(roomUid).update({
-                          'Messages': messages
-                        })
-                        .then(() => {
-                          console.log("Message Saved to Server");
-                        });
                         setFriendAdded(true);
                         
                       }).catch(e => {
@@ -239,40 +286,6 @@ const InterestMeet = ({navigation, route}) => {
           })
         }
       });
-
-    const backAction = () => {
-      Alert.alert("Hold on!", "Are you sure you want to exit this room?", [
-        {
-          text: "Cancel",
-          onPress: () => {
-            backHandler.remove();             
-          },
-          style: "cancel"
-        },
-        { text: "YES", onPress: () => {
-          userExited = true;
-          if(friendAdded){
-            RoomsCollection.doc(roomId).update({
-              'Messages': messages
-            })
-            .then(() => {
-              console.log("Message Saved to Server");
-            });
-          }else{
-            RoomsCollection.doc(roomUid).delete();
-          }
-          backHandler.remove();    
-          navigation.goBack()
-        }  }
-      ]);
-      return true;
-    };
-
-    const backHandler = BackHandler.addEventListener(
-      "hardwareBackPress",
-      backAction
-    );   
-
   }
 
   function clearFriendRequests(callback = () => {}){
