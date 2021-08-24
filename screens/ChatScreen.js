@@ -3,16 +3,11 @@ import {
   View,
   Text,
   StyleSheet,
-  Alert,
-  Image,
   TouchableOpacity,
-  BackHandler
 } from 'react-native';
 import { windowHeight, windowWidth } from '../utils/Dimentions';
 import LinearGradient from 'react-native-linear-gradient';
 import FontAwesome from 'react-native-vector-icons/FontAwesome';
-import Logoanimation from '../components/LogoAnimation';
-import Logoanimation1 from '../components/LogoAnimation1';
 import { Day, Composer, InputToolbar, Time, Bubble, GiftedChat } from 'react-native-gifted-chat'
 import auth from '@react-native-firebase/auth';
 import firestore from '@react-native-firebase/firestore';
@@ -20,8 +15,6 @@ import firestore from '@react-native-firebase/firestore';
 const ChatScreen = ({navigation, route}) => {
 
   const {friend} = route.params;
-
-  let friendId = friend.UserUid;
 
   console.log(JSON.stringify(friend));
   
@@ -61,6 +54,7 @@ const ChatScreen = ({navigation, route}) => {
   }, [messages]);
   
   function Initialize(){
+
     if(roomId !== ""){
       return;
     }
@@ -134,7 +128,6 @@ const ChatScreen = ({navigation, route}) => {
       }
     }); 
   }
-
 
   function onMessageReceive(newMessage = []) {
     setMessages(previousMessages => GiftedChat.append(previousMessages, newMessage));
@@ -240,9 +233,7 @@ const ChatScreen = ({navigation, route}) => {
           <Text style={styles.welcometext}>{friend.Name} </Text>
         </View>
         <LinearGradient colors={['#9E97D4', '#24182E']} start={{ x: 0, y: 0 }} end={{ x: 1, y: 0}} style={styles.empty1}></LinearGradient>
-        <View style={styles.maincontainer}>
-          
-        </View>
+        <View style={styles.maincontainer}></View>
         
       {<GiftedChat 
         messages={messages}
@@ -255,7 +246,6 @@ const ChatScreen = ({navigation, route}) => {
         renderDay={renderDay}
         renderInputToolbar={props => customtInputToolbar(props)}
         renderComposer={(props) => <Composer textInputStyle={{color: 'white'}} {...props} />}
-        // renderAvatar={nul}
       /> }
       </LinearGradient>
     </View>
