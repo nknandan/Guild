@@ -35,7 +35,7 @@ const styles = StyleSheet.create({
       borderWidth: 2,
       flexDirection: 'row',
       alignItems: 'center',
-      backgroundColor: '#D8D8D8',
+      backgroundColor: '#FAF4FF',
     },
     iconStyle: {
       padding: 10,

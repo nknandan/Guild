@@ -153,10 +153,14 @@ const ChatScreen = ({navigation, route}) => {
           right: {
             backgroundColor: '#000000',
             borderBottomRightRadius: 0,
+            borderWidth: 2,
+            borderColor: '#9E97D4'
           },
           left: {
-            backgroundColor: '#ffffff',
+            backgroundColor: '#FAF4FF',
             borderBottomLeftRadius: 0,
+            borderWidth: 2,
+            borderColor: '#24182E'
           }
         }}
         textStyle={{
@@ -209,8 +213,7 @@ const ChatScreen = ({navigation, route}) => {
           borderTopRightRadius: 20, 
         }}
         placeholder="Enter your message..."
-        placeholderTextColor="rgba(188, 122, 255, 0.56)"
-
+        placeholderTextColor="rgba(225, 225, 225, 0.46)"
       />
     );
   };
