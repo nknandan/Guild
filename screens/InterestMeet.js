@@ -112,6 +112,10 @@ const InterestMeet = ({navigation, route}) => {
         }
         return;
       }
+      console.log(`Connected Users: ${updatedData.Connected}`);
+      if(updatedData.Connected < 2){
+        return;
+      }
 
       //Get user Details 
       if(!connectedUserId || !otherUserId){
@@ -126,19 +130,30 @@ const InterestMeet = ({navigation, route}) => {
         }
       }
 
-      if(!connectedUserName || !otherUserName){
-        //Get user Name
-        UsersCollection.doc(connectedUserId).get().then(snapshot => {
-          let userData = snapshot.data();
-          connectedUserName = userData.Name;
+      UsersCollection.doc('' + connectedUserId).get().then(snapshot => {
+        let connectedUserData = snapshot.data();
+        console.log(`Connected User Data ${connectedUserData}`);
+        if(!connectedUserName || !otherUserName){
+          //Get user Name
+          connectedUserName = connectedUserData.Name;
           setOtherUserName(connectedUserName);
-        }).catch(e => {
-          console.log(e);
-        });
-      }
+        }
+
+        //Check if they are friends
+        if(connectedUserData.Friends){
+          //If they have friends
+          let friends = Object.keys(connectedUserData.Friends);
+          if(friends.includes(auth().currentUser.uid)){
+            //They are friends
+            setAddf(['Friend Added','check-circle','white']);
+            setFriendAdded(true);
+          }
+        }
+      }).catch(e => {
+        console.log(e);
+      });
 
       //Checking if they sent any message
-
       if(updatedData[`${connectedUserId}_Message`]){
         RoomsCollection.doc(roomUid).update({
           [`${connectedUserId}_Message`]: firestore.FieldValue.delete()
@@ -157,20 +172,13 @@ const InterestMeet = ({navigation, route}) => {
       }
     }); 
 
-    console.log("Checking for Friend Request");
       //Check for FriendRequest
       UsersCollection.doc('' + auth().currentUser.uid).onSnapshot(snapshot => {
         let userData = snapshot.data();
-        console.log(`UserSnapshot ${JSON.stringify(userData)}`);
-
-        console.log(`FriendReq: ${userData.FriendRequests}`);
         if(userData.FriendRequests && userData.FriendRequests.length > 0){
           //Got Friend Request
 
-          console.log("Got Friend Request");
-
           UsersCollection.doc(connectedUserId).get().then(friendSnapshot => {
-            console.log(`FriendSnapshot ${JSON.stringify(friendSnapshot.data())}`);
             let friendData = friendSnapshot.data();
             let friendName = friendData.Name;
 
@@ -252,8 +260,9 @@ const InterestMeet = ({navigation, route}) => {
             .then(() => {
               console.log("Message Saved to Server");
             });
+          }else{
+            RoomsCollection.doc(roomUid).delete();
           }
-          RoomsCollection.doc(roomUid).delete();
           backHandler.remove();    
           navigation.goBack()
         }  }
