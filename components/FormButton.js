@@ -6,7 +6,7 @@ import { windowHeight } from '../utils/Dimentions';
 const FormButton = ({buttonTitle, ...rest}) => {
     return(
         <TouchableOpacity style={styles.buttonContainer}{...rest}>
-            <LinearGradient colors={['#8d83e0', '#A76BE6']} style={styles.linearGradient}>
+            <LinearGradient colors={['#9100FF', '#A76BE6']} style={styles.linearGradient}>
                 <Text style={styles.buttonText}>{buttonTitle}</Text>
             </LinearGradient>
         </TouchableOpacity>
@@ -26,11 +26,10 @@ const styles = StyleSheet.create({
         borderRadius: 20,
     },
     buttonText: {
-        marginTop: -2,
+        marginTop: 2,
         fontSize: 24,
-        fontWeight: 'bold',
-        color: '#2d2d2d',
-        fontFamily: 'Lato-Regular',
+        color: 'black',
+        fontFamily: 'Montserrat-Regular',
         
     },
     linearGradient: {

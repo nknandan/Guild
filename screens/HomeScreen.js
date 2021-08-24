@@ -10,7 +10,6 @@ import {
 import { AuthContext } from '../navigation/AuthProvider';
 import { windowHeight } from '../utils/Dimentions';
 import LinearGradient from 'react-native-linear-gradient';
-import Icon from 'react-native-vector-icons/FontAwesome';
 import InterestBar from '../components/InterestBar';
 import Logoanimation from '../components/LogoAnimation';
 

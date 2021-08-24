@@ -20,7 +20,7 @@ const HomeScreen1 = ({navigation}) => (
   <Stack.Navigator>
     <Stack.Screen name="HomeScreen" component={HomeScreen} options={{header:() => null}}/>
     <Stack.Screen name="InterestMeet" component={InterestMeet} options={{header:() => null}}/>
-    <Stack.Screen name="MessagesScreen" component={MessagesScreen} options={{header:() => null}}/>
+    {/* <Stack.Screen name="MessagesScreen" component={MessagesScreen} options={{header:() => null}}/> */}
     <Stack.Screen name="ChatScreen" component={ChatScreen} options={{header:() => null}}/>
   </Stack.Navigator>
 );
@@ -28,7 +28,7 @@ const HomeScreen1 = ({navigation}) => (
 const UserProfile1 = ({navigation}) => (
   <Stack.Navigator>
     <Stack.Screen name="UserProfile" component={UserProfile} options={{header:() => null}}/>
-    <Stack.Screen name="MessagesScreen" component={MessagesScreen} options={{header:() => null}}/>
+    {/* <Stack.Screen name="MessagesScreen" component={MessagesScreen} options={{header:() => null}}/> */}
     <Stack.Screen name="ChatScreen" component={ChatScreen} options={{header:() => null}}/>
   </Stack.Navigator>
 );
@@ -47,20 +47,14 @@ const AppStack = () => {
 
     return(
         <Tab.Navigator tabBarOptions={{
-            activeTintColor: '#ffbe8f',
-            inactiveTintColor: 'white',
+            activeTintColor: '#9100FF',
+            inactiveTintColor: '#676767',
             showLabel: false,
-            // activeBackgroundColor: '#2d2d2d',
-            // inactiveBackgroundColor: '#2d2d2d',
             unmountOnBlur: true,
             style: {
-              backgroundColor: 'transparent',
+              backgroundColor: '#24182E',
               borderTopWidth: 0,
-              position: 'absolute',
-              left: -10,
-              right: -10,
-              bottom: 0,
-              height: 70,
+              height: 46,
               elevation: 8
             }
           }}>
@@ -68,7 +62,6 @@ const AppStack = () => {
           tabBarLabel: '',
           unmountOnBlur: true,
           tabBarVisible: getTabBarVisibility(route),
-          // tabBarVisible: route.state && route.state.index === 0,
           tabBarIcon: ({color, size}) => (
             <FontAwesome5
               name="home"
@@ -95,6 +88,6 @@ export default AppStack;
 
 const styles = StyleSheet.create({
   button: {
-    marginTop: 16,
+    // marginTop: 16,
   }
 });

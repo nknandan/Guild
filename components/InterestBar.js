@@ -1,14 +1,32 @@
-import React from 'react';
-import { Text, TouchableOpacity, StyleSheet } from 'react-native';
+import React, {useEffect, useState} from 'react';
+import {Image, View, Text, TouchableOpacity, StyleSheet } from 'react-native';
 import LinearGradient from 'react-native-linear-gradient';
 import { windowHeight } from '../utils/Dimentions';
 
+
+
+
 const InterestBar = ({buttonTitle, ...rest}) => {
+
+    function getRandomInt(min, max) {
+        min = Math.ceil(min);
+        max = Math.floor(max);
+        return Math.floor(Math.random() * (max - min) + min); //The maximum is exclusive and the minimum is inclusive
+    }
+    let arr = [`require('../images/4.jpg')`, `require('../images/1.jpg')`, `require('../images/2.jpg')`, `require('../images/3.jpg')`, `require('../images/7.jpg')`, `require('../images/5.jpg')`, `require('../images/6.jpg')`]     
+    useEffect(() => {
+        let imagen = getRandomInt(1,9)
+        console.log(imagen);
+        console.log(arr[1]);
+    }, []);
+    
     return(
         <TouchableOpacity style={styles.buttonContainer}{...rest}>
-                <LinearGradient colors={['transparent', '#6B60C9']} start={{ x: 1, y: 0 }} end={{ x: 0, y: 1}}style={styles.linear1}></LinearGradient>
-                <LinearGradient colors={['transparent', 'rgba(225, 225, 225, 0.25)', 'transparent']} start={{ x: 0.9, y: 0 }} end={{ x: 0, y: 1}}style={styles.linear2}></LinearGradient>
-                <Text style={styles.buttonText}>{buttonTitle}</Text>
+                {/* <LinearGradient colors={['#ed213a', '#6B60C9']} start={{ x: 0, y: 0 }} end={{ x: 1, y: 1}}style={styles.linear1}></LinearGradient> */}
+                <Image source={require('../images/4.jpg')} style={styles.imageC} blurRadius={3}/>
+                <View style={styles.buttonTextBox}>
+                    <Text style={styles.buttonText}>{buttonTitle}</Text>
+                </View>        
         </TouchableOpacity>
     );
 };
@@ -18,41 +36,48 @@ const styles = StyleSheet.create({
     buttonContainer: {
         marginBottom: 6,
         width: '49%',
-        height: windowHeight /8,
+        height: windowHeight /5,
         backgroundColor: 'transparent',
-        borderRadius: 10,
+        borderRadius: 20,
         marginRight: 6,
         maxWidth: 200,
         borderWidth: 2,
-        borderColor: '#6B60C9'
-        // borderColor: '#8d83e0'
+        borderColor: '#ffffff',
+        justifyContent: 'center'
     },
-    linear1: {
-        width: '100%',
+    imageC: {
+        position: 'absolute',
         height: '100%',
-        borderRadius: 8,
+        width: '100%',
+        borderRadius: 17,
     },
     linear2: {
-        width: '100%',
+        position: 'absolute',
         height: '100%',
-        borderRadius: 8,
-        marginTop: -(windowHeight /8.3),
+        width: '100%',
+        borderRadius: 17,
     },
     buttonText: {
-        marginTop: -(windowHeight /9),
-        marginLeft: 10,
-        fontSize: 20,
-        // fontWeight: 'bold',
+        alignSelf: 'center',
+        // marginBottom: 8,
+        // marginLeft: 10,
+        fontSize: 17,
         color: 'white',
-        fontFamily: 'Lato-Regular',
+        fontFamily: 'Montserrat-Regular',
         
+    },
+    buttonTextBox: {
+        height: 60,
+        alignSelf: 'center',
+        // marginTop : 88,
+        borderRadius: 18,
+        // backgroundColor: 'red',
+        flexDirection: 'row',
+        paddingRight: 3,
     },
     linearGradient: {
         flex: 1,
         width: '100%',
-        // paddingLeft: 10,
-        // paddingRight: 15,
-        // paddingTop: 4,
         borderRadius: 10,
     },
 

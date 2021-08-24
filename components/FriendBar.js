@@ -9,11 +9,11 @@ const FriendBar = ({friendName, friendObj}) => {
 
     return(
         <View style={styles.container}>
-            <View style={styles.containerButton}>
+            <TouchableOpacity style={styles.containerButton}>
                 <Text style={styles.userName}>{friendName}</Text>
-            </View>    
+            </TouchableOpacity>    
             <TouchableOpacity style={styles.chatIcon} onPress={() => {navigation.navigate('ChatScreen', {friend: friendObj})}}>
-                <FontAwesome name={'comments'} size={25} color={'#ffbe8f'}/>
+                <FontAwesome name={'comments'} size={25} color={'#000000'}/>
             </TouchableOpacity>                                    
             <View style={styles.bar}></View>
         </View>
@@ -24,7 +24,7 @@ export default FriendBar;
 
 const styles = StyleSheet.create({
     container: {
-        padding: 7,
+        padding: 8,
         flexDirection: 'row',
         alignItems: 'center'
     },
@@ -34,19 +34,21 @@ const styles = StyleSheet.create({
         alignItems: 'center',
     },
     userName: {
-        fontSize: 20,
-        color: '#8d83e0',
+        fontSize: 24,
+        color: '#9100FF',
         marginRight: 200,
-        fontWeight: 'bold'
+        fontFamily: 'Montserrat-Regular',
+        marginTop: -14,
     },
     chatIcon: {
         marginLeft: -2,
+        marginTop: -14,
     },
     bar: {
-        height: 1,
+        height: 2,
         width: '108%',
-        backgroundColor: 'gray',
+        backgroundColor: '#24182E',
         marginLeft: '-106%',
-        marginTop: 50,
+        marginTop: 40,
     }
   });

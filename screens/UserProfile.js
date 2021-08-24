@@ -22,9 +22,9 @@ const UserProfile = ({navigation}) => {
   const [userName, setUserName] = useState("");
 
   const[friends, setFriends] = useState([]);
-
-
+  
   useEffect(()=>{
+    setFriends([]);
     firestore().collection("Users").doc(auth().currentUser.uid).get().then(userSnapshot => {
       let userData = userSnapshot.data();
       let friendIds = Object.keys(userData.Friends);
