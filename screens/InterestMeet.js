@@ -39,17 +39,12 @@ const InterestMeet = ({navigation, route}) => {
 
   let userExited = false;
 
-  useEffect(() => {
-    console.log('Messages Added');
-  }, [messages]);
-
   useEffect(()=>{
     //Initialize
     Initialize();
   }, []);
 
   function Initialize(){
-    console.log(`Start Roomn ${JSON.stringify(roomId)}`);
     if(roomId !== ""){
       return;
     }
@@ -61,7 +56,6 @@ const InterestMeet = ({navigation, route}) => {
 
       if(rooms.length > 0){
         //Rooms Available
-        console.log(`Setting Room Id: ${rooms[0]._ref.id}`);
         setRoomId(rooms[0]._ref.id);
 
         RoomsCollection.doc(rooms[0]._ref.id).update({
@@ -69,8 +63,6 @@ const InterestMeet = ({navigation, route}) => {
           'ConnectedUsers': firestore.FieldValue.arrayUnion(auth().currentUser.uid)
         })
         .then(() => {
-          console.log('Room Connected');   
-          console.log("Listening");
           startListening(rooms[0]._ref.id);
         });
 
@@ -82,13 +74,7 @@ const InterestMeet = ({navigation, route}) => {
           Connected: 1
         })
         .then((snapshot) => {
-          console.log(snapshot._documentPath._parts[1]);
-
-          console.log(`Setting Room Id: ${snapshot._documentPath._parts[1]}`);
           setRoomId(snapshot._documentPath._parts[1]);
-
-          console.log('Room Created and Waiting!');
-          console.log("Listening");
           startListening(snapshot._documentPath._parts[1]);
         });
       }
@@ -98,8 +84,6 @@ const InterestMeet = ({navigation, route}) => {
   function startListening(roomUid){
     let connectedUserId;
     let connectedUserName;
-
-    console.log(`Room UID: ${roomUid}`);
 
     RoomsCollection.doc(roomUid).onSnapshot(documentSnapshot => {
       let updatedData = documentSnapshot.data();
@@ -129,8 +113,7 @@ const InterestMeet = ({navigation, route}) => {
       if(!connectedUserId || !otherUserId){
         //Get User id
         if(!otherUserId || !connectedUserId){
-          updatedData.ConnectedUsers.forEach(user => {
-            console.log(`User ${user}`);
+          updatedData.ConnectedUsers.forEach(user => {;
             if(user !== auth().currentUser.uid){
               connectedUserId = user;
               setOtherUserId(user);
@@ -151,7 +134,6 @@ const InterestMeet = ({navigation, route}) => {
       }
 
       //Checking if they sent any message
-      console.log(updatedData[`${connectedUserId}_Message`]);
 
       if(updatedData[`${connectedUserId}_Message`]){
         RoomsCollection.doc(roomUid).update({
@@ -177,6 +159,7 @@ const InterestMeet = ({navigation, route}) => {
         let userData = snapshot.data();
         console.log(`UserSnapshot ${JSON.stringify(userData)}`);
 
+        console.log(`FriendReq: ${userData.FriendRequests}`);
         if(userData.FriendRequests && userData.FriendRequests.length > 0){
           //Got Friend Request
 
@@ -192,33 +175,34 @@ const InterestMeet = ({navigation, route}) => {
                 text: "Accept",
                 onPress: () => {
                   //Friend Request Accepted
-                  UsersCollection.doc(connectedUserId).update({
-                    [`Friends.${auth().currentUser.uid}`]: roomUid
-                  }).then(() => {
-                    UsersCollection.doc(auth().currentUser.uid).update({
-                      [`Friends.${connectedUserId}`]: roomUid
+                  clearFriendRequests(() => {
+                    UsersCollection.doc(connectedUserId).update({
+                      [`Friends.${auth().currentUser.uid}`]: roomUid
                     }).then(() => {
-                      //Added Friend
-
-                      setAddf(['Friend Added','check-circle','white']);
-
-                      clearFriendRequests();
-
-                      AsyncStorage.setItem(roomUid, messages).then(() => {
-                        console.log("Saved Messages to Local Storage");
+                      UsersCollection.doc(auth().currentUser.uid).update({
+                        [`Friends.${connectedUserId}`]: roomUid
+                      }).then(() => {
+                        //Added Friend
+  
+                        setAddf(['Friend Added','check-circle','white']);
+  
+                        RoomsCollection.doc(roomUid).update({
+                          'Messages': messages
+                        })
+                        .then(() => {
+                          console.log("Message Saved to Server");
+                        });
                         setFriendAdded(true);
+                        
                       }).catch(e => {
                         console.log(e);
+                        clearFriendRequests();
                       });
-                      
                     }).catch(e => {
                       console.log(e);
                       clearFriendRequests();
-                    });
-                  }).catch(e => {
-                    console.log(e);
-                    clearFriendRequests();
-                  })
+                    })
+                  });
                 },
               },
               { text: "Cancel", onPress: () => {
@@ -229,8 +213,19 @@ const InterestMeet = ({navigation, route}) => {
           }).catch(e => {
             console.log(e);
           })
-        }else{
+        }
 
+        //Check if friend Accepted
+        let friends = userData.Friends;
+        if(friends){
+          // If you have friends
+          Object.keys(userData.Friends).some(friend => {
+            if(friend === connectedUserId){
+              //Friend found
+              setAddf(['Friend Added','check-circle','white']);
+            }
+            return friend === connectedUserId;
+          })
         }
       });
 
@@ -242,11 +237,16 @@ const InterestMeet = ({navigation, route}) => {
           style: "cancel"
         },
         { text: "YES", onPress: () => {
-          console.log(`Remove RoomId: ${roomUid}`);
           userExited = true;
-          RoomsCollection.doc(roomUid).delete().then(() => {
-            console.log('Room Cleared');
-          });
+          if(friendAdded){
+            RoomsCollection.doc(roomId).update({
+              'Messages': messages
+            })
+            .then(() => {
+              console.log("Message Saved to Server");
+            });
+          }
+          RoomsCollection.doc(roomUid).delete();
           navigation.goBack()
         }  }
       ]);
@@ -259,9 +259,10 @@ const InterestMeet = ({navigation, route}) => {
     );
   }
 
-  function clearFriendRequests(){
+  function clearFriendRequests(callback = () => {}){
     UsersCollection.doc(auth().currentUser.uid).update({"FriendRequests": firestore.FieldValue.delete()}).then(() => {
       console.log('Friend Request Handled');
+      callback();
     });
   }
 
@@ -270,13 +271,12 @@ const InterestMeet = ({navigation, route}) => {
   }
 
   function onMessageSent(newMessage = []) {
-    console.log(`Message Sent: RoomId : ${roomId}`);
     RoomsCollection.doc(roomId).update({
       [`${auth().currentUser.uid}_Message`]: newMessage[0].text
     }).then(snapshot => {
 
-    }).catch(error => {
-      console.log(`Firebase Error ${error}`);
+    }).catch(e => {
+      console.log(e);
     })
     setMessages(previousMessages => GiftedChat.append(previousMessages, newMessage));
   }
@@ -341,7 +341,6 @@ const InterestMeet = ({navigation, route}) => {
   };
 
   function addFriend(){
-    console.log(`OtherUserId ${otherUserId}`);
     UsersCollection.doc(otherUserId).update({
       FriendRequests: firestore.FieldValue.arrayUnion(auth().currentUser.uid)
     }).then(() => {
