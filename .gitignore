@@ -58,3 +58,12 @@ buck-out/
 # CocoaPods
 /ios/Pods/
 yarn.lock
+android/app/build.gradle
+android/app/debug/app-debug.apk
+android/app/debug/output-metadata.json
+android/app/release/app-release.apk
+android/app/release/output-metadata.json
+android/gradle.properties
+android/java_pid18276.hprof
+Guild.jks
+package.json

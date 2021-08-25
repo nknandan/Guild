@@ -59,7 +59,7 @@ const InterestMeet = ({ navigation, route }) => {
       }
 
       /**
-       * Adding a Timeout for 100ms so that user message update event 
+       * Adding a Timeout for 100ms so that user message update event
        * wont collide with messages being saved to the server
        */
       let msgSaveTimeout = setTimeout(function () {
@@ -184,7 +184,7 @@ const InterestMeet = ({ navigation, route }) => {
         return;
       }
 
-      //Get user Details 
+      //Get user Details
       if (!connectedUserId || !otherUserId) {
         //Get User id
         if (!otherUserId || !connectedUserId) {
