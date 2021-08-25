@@ -82,9 +82,8 @@ const InterestMeet = ({navigation, route}) => {
           userExited = true;
           console.log(`FriendAdded ${friendAdded}`);
           if(!friendAdded){
-            RoomsCollection.doc(roomUid).delete();
+            RoomsCollection.doc(roomId).delete();
           }
-          
           navigation.goBack()
         }  }
       ]);
