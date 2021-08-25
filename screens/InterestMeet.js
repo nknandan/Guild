@@ -498,7 +498,7 @@ const InterestMeet = ({ navigation, route }) => {
                   onPress={() => navigation.goBack()}
                 />
               </TouchableOpacity>
-              <Text style={styles.welcometext420}>Senzi</Text>
+              <Text style={styles.welcometext420}>{otherUserName}</Text>
             </View>
           </View>
           :
