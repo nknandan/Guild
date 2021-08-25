@@ -134,7 +134,7 @@ const InterestMeet = ({ navigation, route }) => {
           'ConnectedUsers': firestore.FieldValue.arrayUnion(auth().currentUser.uid)
         })
           .then(() => {
-            setRoomId(snapshot._documentPath._parts[1]);
+            //Starts Listening for the users Message
             startListening(rooms[0]._ref.id);
           });
 
