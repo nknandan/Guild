@@ -51,7 +51,10 @@ const UserProfile = ({navigation}) => {
            <LinearGradient colors={['#9E97D4', '#24182E']} start={{ x: 0, y: 0 }} end={{ x: 1, y: 0}} style={styles.empty1}></LinearGradient>
            <View style={styles.maincontainer}>
            <Text style={styles.welcometext}>Welcome</Text>
-            <Text style={styles.userNameText}>{userName}</Text>
+           <View style={styles.userNameText1}>
+           <Text  numberOfLines={1} style={styles.userNameText}>{userName}</Text>
+           </View>
+            
             <LinearGradient colors={['#9E97D4', '#24182E']} start={{ x: 0, y: 0 }} end={{ x: 0, y: 1}} style={styles.empty2}></LinearGradient>
             <View style={styles.maincontainer1}>
               <Text style={styles.welcometext1}>Your Friends</Text>
@@ -142,6 +145,10 @@ const styles = StyleSheet.create({
     fontFamily: 'Montserrat-Regular',
     marginTop: -30,
     marginLeft: 112,
+
+  },
+  userNameText1: {
+    width: 300,
   },
   welcometext1: {
     fontSize: 18,
