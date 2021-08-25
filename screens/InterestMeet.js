@@ -109,19 +109,24 @@ const InterestMeet = ({ navigation, route }) => {
     return unsubscribe;
   }, [navigation, messages, friendAdded, roomId, listeners])
 
+
+  //Initialization Function
   function Initialize() {
+    //Checking if Room Id is the default to prevent matching multiple times
     if (roomId !== "") {
       return;
     }
 
+    //Get the Room Name which the user selected
     const { roomName } = route.params;
 
+    //Matchmaking
     RoomsCollection.where('Connected', '<', 2).where("Interest", "==", roomName).get().then(querySnapshot => {
 
       let rooms = querySnapshot._docs;
 
       if (rooms.length > 0) {
-        //Rooms Available
+        //If there are already users waiting to chat
         setRoomId(rooms[0]._ref.id);
 
         RoomsCollection.doc(rooms[0]._ref.id).update({
@@ -129,11 +134,12 @@ const InterestMeet = ({ navigation, route }) => {
           'ConnectedUsers': firestore.FieldValue.arrayUnion(auth().currentUser.uid)
         })
           .then(() => {
+            setRoomId(snapshot._documentPath._parts[1]);
             startListening(rooms[0]._ref.id);
           });
 
       } else {
-        //Create a new Room
+        //If there are no users, we wait for a user to connect
         RoomsCollection.add({
           Interest: roomName,
           ConnectedUsers: [auth().currentUser.uid],
