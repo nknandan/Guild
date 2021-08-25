@@ -184,10 +184,10 @@ const ChatScreen = ({navigation, route}) => {
       {...props}
         timeTextStyle={{
           left: {
-            color: 'rgba(0,0,0,0.6)',
+            color: 'transparent',
           },
           right: {
-            color: 'rgba(225,225,225,0.6)',
+            color: 'transparent',
           },
         }}
       />
@@ -195,7 +195,7 @@ const ChatScreen = ({navigation, route}) => {
   };
 
   const renderDay = (props) => {
-    return <Day {...props} textStyle={{color: '#24182E'}}/>
+    return <Day {...props} textStyle={{color: 'transparent'}}/>
   }
 
   const customtInputToolbar = props => {

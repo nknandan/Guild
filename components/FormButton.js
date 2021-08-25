@@ -11,7 +11,7 @@ const FormButton = ({buttonTitle, ...rest}) => {
                 <FontAwesome.Button 
                     name="long-arrow-right"
                     size={25}
-                    backgroundColor="#9100FF"
+                    backgroundColor="transparent"
                     color="#ffffff"
                     style={styles.iconright}
                 />
