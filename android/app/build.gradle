@@ -135,8 +135,9 @@ android {
         applicationId "com.nav"
         minSdkVersion rootProject.ext.minSdkVersion
         targetSdkVersion rootProject.ext.targetSdkVersion
-        versionCode 1
-        versionName "1.0"
+        versionCode 4
+        versionName "1.6"
+        missingDimensionStrategy 'react-native-camera', 'general' 
     }
     splits {
         abi {
@@ -188,6 +189,8 @@ dependencies {
     implementation fileTree(dir: "libs", include: ["*.jar"])
     //noinspection GradleDynamicVersion
     implementation "com.facebook.react:react-native:+"  // From node_modules
+
+    implementation project(':react-native-contacts')
 
     implementation "androidx.swiperefreshlayout:swiperefreshlayout:1.0.0"
 

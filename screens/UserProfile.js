@@ -86,21 +86,21 @@ const styles = StyleSheet.create({
     height: windowHeight/15,
     backgroundColor: '#ffffff',
     flexDirection: 'row',
-    marginLeft: -25,
+    marginLeft: -(windowWidth/18),
   },
   logoc: {
     height: 120,
     width: 120,
-    marginLeft: -25,
+    marginLeft: -(windowWidth/18),
   },
   logon: {
     height: 90,
     width: 90,
-    marginTop: -34,
-    marginLeft: -50,
+    marginTop: -(windowHeight/22),
+    marginLeft: -(windowWidth/8),
   },
   empty1: {
-    height: 2,
+    height: (windowHeight/220),
     backgroundColor: 'red',
   },
   usercon: {
@@ -109,26 +109,25 @@ const styles = StyleSheet.create({
     alignItems: 'center',
   },
   maincontainer: {
-    padding: 20,
+    padding: (windowHeight/40),
   },
   maincontainer1: {
-    padding: 15,
+    padding: (windowHeight/60),
   },
   maincontainer2: {
-    padding: 15,
+    padding: (windowHeight/60),
     paddingLeft: 0,
-    height: 540,
+    height: (windowHeight/1.39),
     // backgroundColor: 'white',
     flexWrap: 'wrap',
   },
   scroll: {
     flex: 1,
-    paddingRight: 10,
-    width: '110%',
+    paddingRight: (windowWidth/30),
+    width: (windowWidth/1.14),
   },
   maincontainer3: {
-    height: 790,
-    // backgroundColor: 'white',
+    height: (windowHeight/1.1),
     flexWrap: 'wrap',
   },
   welcometext: {
@@ -158,9 +157,9 @@ const styles = StyleSheet.create({
     marginBottom: 12,
   },
   empty2: {
-    height: windowHeight-200,
-    width: 2,
-    marginTop: 10,
+    height: (windowHeight/1.34),
+    width: (windowHeight/220),
+    marginTop: (windowHeight/100),
     marginBottom: -(windowHeight-190),
   },
   logoutButton: {

@@ -1,21 +1,57 @@
-import React, {useContext} from 'react';
+import React, {useContext, useState} from 'react';
 import {
   View,
   ScrollView,
   Text,
   StyleSheet,
-  Image,
+  SafeAreaView,
   TouchableOpacity,
+  Linking,
+  Image,
+  PermissionsAndroid,
+  Platform
 } from 'react-native';
 import { AuthContext } from '../navigation/AuthProvider';
-import { windowHeight } from '../utils/Dimentions';
+import { windowHeight, windowWidth } from '../utils/Dimentions';
 import LinearGradient from 'react-native-linear-gradient';
 import InterestBar from '../components/InterestBar';
 import Logoanimation from '../components/LogoAnimation';
+import FontAwesome from 'react-native-vector-icons/FontAwesome';
+import {
+  launchImageLibrary
+} from 'react-native-image-picker';
 
-
-const HomeScreen = ({navigation}) => {
+const HomeScreen = ({navigation}) => {  
   const {user, logout} = useContext(AuthContext);
+  const [filePath, setFilePath] = useState({});
+
+  const chooseFile = (type) => {
+    let options = {
+      mediaType: type,
+      maxWidth: 300,
+      maxHeight: 550,
+      quality: 1,
+    };
+    launchImageLibrary(options, (response) => {
+      console.log('Response = ', response);
+
+      if (response.errorCode == 'permission') {
+        alert('Permission not satisfied');
+        return;
+      } else if (response.errorCode == 'others') {
+        alert(response.errorMessage);
+        return;
+      }
+      console.log('base64 -> ', response.base64);
+      console.log('uri -> ', response.uri);
+      console.log('width -> ', response.width);
+      console.log('height -> ', response.height);
+      console.log('fileSize -> ', response.fileSize);
+      console.log('type -> ', response.type);
+      console.log('fileName -> ', response.fileName);
+      setFilePath(response);
+    });
+  };
 
   let interests = ["Gaming", "Cryptocurrency", "Valorant", "Apex Legends", "Football", "Marvel", "React", "Graphics", "Fifa", "TV Series", "Fiction", "Sherlock Holmes", "Web Development", "Trading"]
   
@@ -33,6 +69,13 @@ const HomeScreen = ({navigation}) => {
            <LinearGradient colors={['#9E97D4', '#24182E']} start={{ x: 0, y: 0 }} end={{ x: 1, y: 0}} style={styles.empty1}></LinearGradient>
            <View style={styles.maincontainer}>
            <Text style={styles.welcometext}>Find Your Type Of People</Text>
+           <FontAwesome name={'camera'} size={25} color={'#9100FF'} style={styles.cameraIcon}
+            onPress={() => {navigation.navigate('CameraScreen')}} />
+           <FontAwesome name={'address-book'} size={25} color={'#9100FF'} style={styles.contactIcon}
+            // onPress={() => {navigation.navigate('ContactsScreen')}}/>
+            onPress={() => {Linking.openURL('content://com.android.contacts/contacts')}}/>
+            <FontAwesome name={'image'} size={25} color={'#9100FF'} style={styles.imageIcon} 
+            onPress={() => chooseFile('photo')}/>
            <LinearGradient colors={['#9E97D4', '#24182E']} start={{ x: 0, y: 0 }} end={{ x: 0, y: 1}} style={styles.empty2}></LinearGradient>
               <View style={styles.maincontainer1}>
                 <Text style={styles.welcometext1}>Interests you might like</Text>
@@ -62,49 +105,58 @@ const styles = StyleSheet.create({
     height: windowHeight/15,
     backgroundColor: '#ffffff',
     flexDirection: 'row',
-    marginLeft: -25,
+    marginLeft: -(windowWidth/18),
   },
   logoc: {
     height: 120,
     width: 120,
-    marginLeft: -25,
+    marginLeft: -(windowWidth/18),
   },
   logon: {
     height: 90,
     width: 90,
-    marginTop: -34,
-    marginLeft: -50,
+    marginTop: -(windowHeight/22),
+    marginLeft: -(windowWidth/8),
   },
   empty1: {
-    height: 2,
+    height: (windowHeight/220),
     backgroundColor: 'red',
   },
-  usercon: {
-    marginTop: 4,
-    marginLeft: 210,
-    alignItems: 'center',
-  },
   maincontainer: {
-    padding: 20,
+    padding: (windowHeight/40),
+  },
+  cameraIcon: {
+    position: 'absolute',
+    marginTop: -(windowHeight/20),
+    marginLeft: (windowWidth/1.2),
+  },
+  imageIcon: {
+    position: 'absolute',
+    marginTop: -(windowHeight/20),
+    marginLeft: (windowWidth/1.69),
+  },
+  contactIcon: {
+    position: 'absolute',
+    marginTop: -(windowHeight/20),
+    marginLeft: (windowWidth/1.39),
   },
   maincontainer1: {
-    padding: 15,
+    padding: (windowHeight/60),
   },
   maincontainer2: {
-    padding: 15,
+    padding: (windowHeight/60),
     paddingLeft: 0,
-    height: 540,
+    height: (windowHeight/1.39),
     // backgroundColor: 'white',
     flexWrap: 'wrap',
   },
   scroll: {
     flex: 1,
-    paddingRight: 10,
-    width: '110%',
+    paddingRight: (windowWidth/30),
+    width: (windowWidth/1.14),
   },
   maincontainer3: {
-    height: 1108,
-    // backgroundColor: 'white',
+    height: (windowHeight/1.1),
     flexWrap: 'wrap',
   },
   welcometext: {
@@ -121,9 +173,9 @@ const styles = StyleSheet.create({
     fontFamily: 'Montserrat-Regular'
   },
   empty2: {
-    height: windowHeight-200,
-    width: 2,
-    marginTop: 10,
+    height: (windowHeight/1.34),
+    width: (windowHeight/220),
+    marginTop: (windowHeight/100),
     marginBottom: -(windowHeight-190),
   },
 

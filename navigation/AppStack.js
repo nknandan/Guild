@@ -8,6 +8,8 @@ import FontAwesome5 from 'react-native-vector-icons/FontAwesome5';
 import HomeScreen from '../screens/HomeScreen';
 import InterestMeet from '../screens/InterestMeet';
 import MessagesScreen from '../screens/MessagesScreen';
+import CameraScreen from '../screens/CameraScreen';
+import ContactsScreen from '../screens/ContactsScreen';
 import ChatScreen from '../screens/ChatScreen';
 import UserProfile from '../screens/UserProfile';
 import { StyleSheet } from 'react-native';
@@ -19,7 +21,9 @@ const Tab = createBottomTabNavigator();
 const HomeScreen1 = ({navigation}) => (
   <Stack.Navigator>
     <Stack.Screen name="HomeScreen" component={HomeScreen} options={{header:() => null}}/>
+    <Stack.Screen name="CameraScreen" component={CameraScreen} options={{header:() => null}}/>
     <Stack.Screen name="InterestMeet" component={InterestMeet} options={{header:() => null}}/>
+    <Stack.Screen name="ContactsScreen" component={ContactsScreen} options={{header:() => null}}/>
     {/* <Stack.Screen name="MessagesScreen" component={MessagesScreen} options={{header:() => null}}/> */}
     <Stack.Screen name="ChatScreen" component={ChatScreen} options={{header:() => null}}/>
   </Stack.Navigator>
